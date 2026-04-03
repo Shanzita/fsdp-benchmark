@@ -1,0 +1,7 @@
+{
+  "mode": "single_gpu",
+  "model": "vit_l_16",
+  "batch_size": 64,
+  "status": "SUCCESS",
+  "peak_memory_gb": 21.286
+}

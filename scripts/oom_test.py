@@ -12,13 +12,13 @@ def get_model(name):
 
 def test_single(model_name, batch_size):
     device = torch.device("cuda:0")
-    torch.cuda.reset_peak_memory_stats(device)
     print(f"\n{'='*60}")
     print(f" SINGLE GPU TEST: {model_name}, bs={batch_size}")
     print(f" GPU: {torch.cuda.get_device_name(0)}")
     print(f"{'='*60}")
     try:
         model = get_model(model_name).to(device)
+        torch.cuda.reset_peak_memory_stats(device)
         optimizer = torch.optim.Adam(model.parameters(), lr=1e-3)
         x = torch.randn(batch_size, 3, 224, 224, device=device)
         target = torch.randint(0, 1000, (batch_size,), device=device)
@@ -48,13 +48,13 @@ def test_fsdp(model_name, batch_size):
     local_rank = int(os.environ.get("LOCAL_RANK", 0))
     torch.cuda.set_device(local_rank)
     device = torch.device(f"cuda:{local_rank}")
-    torch.cuda.reset_peak_memory_stats(device)
     if rank == 0:
         print(f"\n{'='*60}")
         print(f" FSDP TEST: {model_name}, bs={batch_size}/GPU, {world_size} GPUs")
         print(f"{'='*60}")
     try:
         model = get_model(model_name).to(device)
+        torch.cuda.reset_peak_memory_stats(device)
         fsdp_model = FSDP(model,
             auto_wrap_policy=partial(size_based_auto_wrap_policy, min_num_params=1_000_000),
             sharding_strategy=ShardingStrategy.FULL_SHARD,
