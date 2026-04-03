@@ -1,0 +1,14 @@
+{
+  "mode": "single_gpu",
+  "model": "vit_b_16",
+  "num_params_M": 86.6,
+  "batch_size": 32,
+  "num_steps": 50,
+  "num_gpus": 1,
+  "avg_step_time_ms": 345.51,
+  "throughput_samples_per_sec": 92.62,
+  "peak_memory_gb": 4.842,
+  "max_peak_memory_gb": 4.842,
+  "final_loss": 2.5977,
+  "gpu_name": "Tesla V100-PCIE-32GB"
+}

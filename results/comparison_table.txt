@@ -1,0 +1,13 @@
+Mode                         Model           GPUs   Step(ms)  Thru(s/s)   Mem(GB)
+------------------------------------------------------------------------------------------
+unknown                      ?                  1       0.00       0.00     0.000
+unknown                      ?                  1       0.00       0.00     0.000
+DDP (2GPU)                   resnet50           2     110.50     579.18     3.041
+FSDP-Full (2GPU)             resnet50           2     118.85     538.49     2.811
+FSDP-Full+MP (2GPU)          resnet50           2     189.44     337.83     2.203
+FSDP-GradOp (2GPU)           resnet50           2     107.98     592.73     2.879
+Single GPU                   resnet50           1     101.75     314.51     2.945
+DDP (2GPU)                   vit_b_16           2     359.92     177.82     5.165
+FSDP-Full (2GPU)             vit_b_16           2     378.47     169.10     4.391
+FSDP-Full+MP (2GPU)          vit_b_16           2     143.92     444.68     2.478
+Single GPU                   vit_b_16           1     345.51      92.62     4.842

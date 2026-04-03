@@ -1,0 +1,20 @@
+{
+  "mode": "fsdp_full_shard+mp",
+  "model": "resnet50",
+  "num_params_M": 25.6,
+  "batch_size_per_gpu": 32,
+  "effective_batch_size": 64,
+  "num_steps": 50,
+  "num_gpus": 2,
+  "sharding_strategy": "FULL_SHARD",
+  "mixed_precision": true,
+  "avg_step_time_ms": 189.44,
+  "throughput_samples_per_sec": 337.83,
+  "peak_memory_gb_per_gpu": [
+    2.203,
+    2.203
+  ],
+  "max_peak_memory_gb": 2.203,
+  "final_loss": 0.001,
+  "gpu_name": "Tesla V100-PCIE-32GB"
+}

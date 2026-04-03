@@ -1,4 +1,5 @@
-"""OOM Test — Proves FSDP trains models that crash on single GPU"""
+"""OOM Test - proves FSDP enables training models that crash on single GPU"""
+from functools import partial
 import argparse, json, os
 import torch
 import torch.distributed as dist
@@ -14,7 +15,7 @@ def test_single(model_name, batch_size):
     torch.cuda.reset_peak_memory_stats(device)
     print(f"\n{'='*60}")
     print(f" SINGLE GPU TEST: {model_name}, bs={batch_size}")
-    print(f" GPU: {torch.cuda.get_device_name(0)} ({torch.cuda.get_device_properties(0).total_mem/1024**3:.1f} GB)")
+    print(f" GPU: {torch.cuda.get_device_name(0)}")
     print(f"{'='*60}")
     try:
         model = get_model(model_name).to(device)
@@ -26,17 +27,17 @@ def test_single(model_name, batch_size):
         loss.backward()
         optimizer.step()
         peak = torch.cuda.max_memory_allocated(device) / (1024**3)
-        print(f"\n SUCCESS — Peak memory: {peak:.2f} GB")
-        status = "SUCCESS"
+        print(f" SUCCESS - Peak memory: {peak:.2f} GB")
+        result = {"mode": "single_gpu", "model": model_name, "batch_size": batch_size,
+                  "status": "SUCCESS", "peak_memory_gb": round(peak, 3)}
     except torch.cuda.OutOfMemoryError:
         peak = torch.cuda.max_memory_allocated(device) / (1024**3)
-        print(f"\n OOM! Memory before crash: {peak:.2f} GB")
-        print(f" This is why FSDP exists!")
-        status = "OOM"
+        print(f" OOM! Cannot fit {model_name} bs={batch_size} on single GPU")
+        result = {"mode": "single_gpu", "model": model_name, "batch_size": batch_size,
+                  "status": "OOM", "peak_memory_gb": round(peak, 3)}
     os.makedirs("results", exist_ok=True)
     with open(f"results/oom_single_{model_name}_bs{batch_size}.json", "w") as f:
-        json.dump({"mode": "single_gpu", "model": model_name, "batch_size": batch_size,
-                    "status": status, "peak_memory_gb": round(peak, 3)}, f, indent=2)
+        json.dump(result, f, indent=2)
 
 def test_fsdp(model_name, batch_size):
     from torch.distributed.fsdp import FullyShardedDataParallel as FSDP, ShardingStrategy
@@ -55,7 +56,7 @@ def test_fsdp(model_name, batch_size):
     try:
         model = get_model(model_name).to(device)
         fsdp_model = FSDP(model,
-            auto_wrap_policy=size_based_auto_wrap_policy(min_num_params=1_000_000),
+            auto_wrap_policy=partial(size_based_auto_wrap_policy, min_num_params=1_000_000),
             sharding_strategy=ShardingStrategy.FULL_SHARD,
             device_id=local_rank, use_orig_params=True)
         optimizer = torch.optim.Adam(fsdp_model.parameters(), lr=1e-3)
@@ -73,26 +74,26 @@ def test_fsdp(model_name, batch_size):
         dist.all_gather(peak_list, peak_t)
         if rank == 0:
             per_gpu = [t.item() for t in peak_list]
-            print(f"\n SUCCESS! Peak per GPU: {[f'{m:.2f} GB' for m in per_gpu]}")
+            print(f" SUCCESS! Peak memory/GPU: {[f'{m:.2f} GB' for m in per_gpu]}")
+            result = {"mode": "fsdp", "model": model_name, "batch_size_per_gpu": batch_size,
+                      "num_gpus": world_size, "status": "SUCCESS",
+                      "peak_memory_gb_per_gpu": [round(m, 3) for m in per_gpu],
+                      "max_peak_memory_gb": round(max(per_gpu), 3)}
             os.makedirs("results", exist_ok=True)
             with open(f"results/oom_fsdp_{model_name}_bs{batch_size}_{world_size}gpu.json", "w") as f:
-                json.dump({"mode": "fsdp", "model": model_name, "batch_size_per_gpu": batch_size,
-                            "num_gpus": world_size, "status": "SUCCESS",
-                            "peak_memory_gb_per_gpu": [round(m, 3) for m in per_gpu],
-                            "max_peak_memory_gb": round(max(per_gpu), 3)}, f, indent=2)
+                json.dump(result, f, indent=2)
     except torch.cuda.OutOfMemoryError:
         if rank == 0:
-            print(f"\n OOM even with FSDP — reduce batch_size or add GPUs")
+            print(f" OOM even with FSDP")
     dist.destroy_process_group()
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--mode", required=True, choices=["single", "fsdp"])
-    parser.add_argument("--model", default="vit_l_16", choices=["resnet50", "vit_b_16", "vit_l_16"])
+    parser.add_argument("--model", default="vit_l_16")
     parser.add_argument("--batch_size", type=int, default=64)
     args = parser.parse_args()
     if args.mode == "single":
         test_single(args.model, args.batch_size)
     else:
         test_fsdp(args.model, args.batch_size)
-        

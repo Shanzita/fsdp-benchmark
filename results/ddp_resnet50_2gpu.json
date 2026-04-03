@@ -1,0 +1,18 @@
+{
+  "mode": "ddp",
+  "model": "resnet50",
+  "num_params_M": 25.6,
+  "batch_size_per_gpu": 32,
+  "effective_batch_size": 64,
+  "num_steps": 50,
+  "num_gpus": 2,
+  "avg_step_time_ms": 110.5,
+  "throughput_samples_per_sec": 579.18,
+  "peak_memory_gb_per_gpu": [
+    3.041,
+    3.041
+  ],
+  "max_peak_memory_gb": 3.041,
+  "final_loss": 0.0001,
+  "gpu_name": "Tesla V100-PCIE-32GB"
+}

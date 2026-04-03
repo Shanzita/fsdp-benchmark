@@ -1,0 +1,19 @@
+/scratch/ss516/fsdp_env/lib/python3.11/site-packages/torch/distributed/fsdp/_wrap_utils.py:118: UserWarning: Both mixed precision and an auto_wrap_policy were specified to FSDP, where the wrapped module has submodules of type:
+{<class 'torch.nn.modules.batchnorm.BatchNorm2d'>}
+These modules will be wrapped as separate FSDP instacnes with mixed precision disabled.
+  warnings.warn(
+/scratch/ss516/fsdp_env/lib/python3.11/site-packages/torch/distributed/fsdp/_wrap_utils.py:118: UserWarning: Both mixed precision and an auto_wrap_policy were specified to FSDP, where the wrapped module has submodules of type:
+{<class 'torch.nn.modules.batchnorm.BatchNorm2d'>}
+These modules will be wrapped as separate FSDP instacnes with mixed precision disabled.
+  warnings.warn(
+Traceback (most recent call last):
+  File "/home/ss516/fsdp-benchmark/scripts/oom_test.py", line 97, in <module>
+    test_single(args.model, args.batch_size)
+  File "/home/ss516/fsdp-benchmark/scripts/oom_test.py", line 15, in test_single
+    torch.cuda.reset_peak_memory_stats(device)
+  File "/scratch/ss516/fsdp_env/lib/python3.11/site-packages/torch/cuda/memory.py", line 344, in reset_peak_memory_stats
+    return torch._C._cuda_resetPeakMemoryStats(device)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+RuntimeError: Invalid device argument 
+/home/ss516/fsdp-benchmark/scripts/visualize_results.py:81: UserWarning: Tight layout not applied. The bottom and top margins cannot be made large enough to accommodate all Axes decorations.
+  plt.tight_layout()

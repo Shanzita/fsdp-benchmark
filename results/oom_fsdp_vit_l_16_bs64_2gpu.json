@@ -1,0 +1,12 @@
+{
+  "mode": "fsdp",
+  "model": "vit_l_16",
+  "batch_size_per_gpu": 64,
+  "num_gpus": 2,
+  "status": "SUCCESS",
+  "peak_memory_gb_per_gpu": [
+    20.767,
+    20.767
+  ],
+  "max_peak_memory_gb": 20.767
+}

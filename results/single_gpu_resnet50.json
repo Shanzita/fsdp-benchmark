@@ -1,0 +1,14 @@
+{
+  "mode": "single_gpu",
+  "model": "resnet50",
+  "num_params_M": 25.6,
+  "batch_size": 32,
+  "num_steps": 50,
+  "num_gpus": 1,
+  "avg_step_time_ms": 101.75,
+  "throughput_samples_per_sec": 314.51,
+  "peak_memory_gb": 2.945,
+  "max_peak_memory_gb": 2.945,
+  "final_loss": 0.0,
+  "gpu_name": "Tesla V100-PCIE-32GB"
+}

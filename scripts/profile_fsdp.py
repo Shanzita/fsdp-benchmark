@@ -1,4 +1,5 @@
-"""FSDP Profiling — Chrome traces + kernel summary for screenshots"""
+"""FSDP Profiling - generates Chrome traces and kernel summaries"""
+from functools import partial
 import argparse, os
 import torch
 import torch.distributed as dist
@@ -27,50 +28,44 @@ def profile_fsdp(model_name, batch_size):
 
     model = get_model(model_name).to(device)
     fsdp_model = FSDP(model,
-        auto_wrap_policy=size_based_auto_wrap_policy(min_num_params=1_000_000),
+        auto_wrap_policy=partial(size_based_auto_wrap_policy, min_num_params=1_000_000),
         sharding_strategy=ShardingStrategy.FULL_SHARD,
         device_id=local_rank, use_orig_params=True)
+
     optimizer = torch.optim.Adam(fsdp_model.parameters(), lr=1e-3)
     criterion = nn.CrossEntropyLoss()
     x = torch.randn(batch_size, 3, 224, 224, device=device)
     target = torch.randint(0, 1000, (batch_size,), device=device)
 
-    # Warmup
     fsdp_model.train()
     for _ in range(5):
         optimizer.zero_grad()
         loss = criterion(fsdp_model(x), target)
         loss.backward()
         optimizer.step()
+
     torch.cuda.synchronize()
     dist.barrier()
-
     os.makedirs("results", exist_ok=True)
 
-    # Chrome trace
-    if rank == 0:
-        print(" Generating profiler trace...")
-    with profile(
-        activities=[ProfilerActivity.CPU, ProfilerActivity.CUDA],
-        schedule=schedule(wait=1, warmup=2, active=5, repeat=1),
-        on_trace_ready=lambda p: p.export_chrome_trace(
-            f"results/trace_fsdp_{model_name}_rank{rank}.json"),
-        record_shapes=True, profile_memory=True, with_stack=True,
-    ) as prof:
-        for _ in range(8):
+    prof_schedule = schedule(wait=1, warmup=2, active=5, repeat=1)
+    with profile(activities=[ProfilerActivity.CPU, ProfilerActivity.CUDA],
+                 schedule=prof_schedule,
+                 on_trace_ready=lambda p: p.export_chrome_trace(
+                     f"results/trace_fsdp_{model_name}_rank{rank}.json"),
+                 record_shapes=True, profile_memory=True) as prof:
+        for step in range(8):
             optimizer.zero_grad()
             loss = criterion(fsdp_model(x), target)
             loss.backward()
             optimizer.step()
             prof.step()
+
     if rank == 0:
-        print(f"   Saved: results/trace_fsdp_{model_name}_rank0.json")
+        print(f" Trace saved: results/trace_fsdp_{model_name}_rank0.json")
 
     dist.barrier()
 
-    # Kernel summary
-    if rank == 0:
-        print(" Generating kernel summary...")
     with profile(activities=[ProfilerActivity.CPU, ProfilerActivity.CUDA],
                  record_shapes=True, profile_memory=True) as prof2:
         for _ in range(5):
@@ -78,21 +73,18 @@ def profile_fsdp(model_name, batch_size):
             loss = criterion(fsdp_model(x), target)
             loss.backward()
             optimizer.step()
+
     if rank == 0:
+        print(f"\n Top 15 CUDA Kernels:")
         print(prof2.key_averages().table(sort_by="cuda_time_total", row_limit=15))
         with open(f"results/kernel_summary_{model_name}.txt", "w") as f:
             f.write(prof2.key_averages().table(sort_by="cuda_time_total", row_limit=20))
-        print(f"   Saved: results/kernel_summary_{model_name}.txt")
-
-    # Memory summary
-    if rank == 0:
+        print(f" Kernel summary saved: results/kernel_summary_{model_name}.txt")
         print(f"\n Memory Summary:")
         print(torch.cuda.memory_summary(device=device, abbreviated=True))
 
     dist.barrier()
     dist.destroy_process_group()
-    if rank == 0:
-        print("\n Profiling complete!")
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()

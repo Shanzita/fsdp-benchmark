@@ -1,0 +1,20 @@
+{
+  "mode": "fsdp_full_shard",
+  "model": "vit_b_16",
+  "num_params_M": 86.6,
+  "batch_size_per_gpu": 32,
+  "effective_batch_size": 64,
+  "num_steps": 50,
+  "num_gpus": 2,
+  "sharding_strategy": "FULL_SHARD",
+  "mixed_precision": false,
+  "avg_step_time_ms": 378.47,
+  "throughput_samples_per_sec": 169.1,
+  "peak_memory_gb_per_gpu": [
+    4.39,
+    4.391
+  ],
+  "max_peak_memory_gb": 4.391,
+  "final_loss": 3.9323,
+  "gpu_name": "Tesla V100-PCIE-32GB"
+}

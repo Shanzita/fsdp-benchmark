@@ -1,5 +1,6 @@
 """FSDP (Fully Sharded Data Parallel) Benchmark"""
 import argparse, json, os, time
+from functools import partial
 import torch
 import torch.distributed as dist
 import torch.nn as nn
@@ -48,7 +49,7 @@ def benchmark(model_name, batch_size, num_steps, warmup_steps=5,
     torch.cuda.reset_peak_memory_stats(device)
     model = get_model(model_name).to(device)
     num_params = count_parameters(model)
-    auto_wrap_policy = size_based_auto_wrap_policy(min_num_params=1_000_000)
+    auto_wrap_policy = partial(size_based_auto_wrap_policy, min_num_params=1_000_000)
 
     fsdp_kwargs = {
         "auto_wrap_policy": auto_wrap_policy,
@@ -58,7 +59,7 @@ def benchmark(model_name, batch_size, num_steps, warmup_steps=5,
     }
     if use_mixed_precision:
         fsdp_kwargs["mixed_precision"] = MixedPrecision(
-            param_dtype=torch.bfloat16,
+            param_dtype=torch.float16,
             reduce_dtype=torch.float32,
             buffer_dtype=torch.float32,
         )

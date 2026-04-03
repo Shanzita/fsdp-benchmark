@@ -1,0 +1,758 @@
+============================================================
+ FSDP Benchmark - Rice NOTS - Job 8055296
+ Node: bc11u11n2 - GPUs: 2 - Fri Apr  3 04:17:19 AM CDT 2026
+============================================================
+>>> Step 0: Environment
+============================================================
+ ENVIRONMENT REPORT
+============================================================
+
+## Software
+  OS:          Linux 5.14.0-427.13.1.el9_4.x86_64
+  Python:      3.11.5
+  PyTorch:     2.5.1+cu121
+  CUDA:        12.1
+  GPU count:   2
+  TorchVision: 0.20.1+cu121
+
+## Hardware
+  CPU:         Intel(R) Xeon(R) Gold 6230 CPU @ 2.10GHz
+  Cores:       4
+  RAM:          GB
+  NVIDIA Driver: 535.230.02
+  GPU 0:       Tesla V100-PCIE-32GB (31.7 GB)
+  GPU 1:       Tesla V100-PCIE-32GB (31.7 GB)
+
+## Distributed
+  NCCL:        True
+  Gloo:        True
+============================================================
+Fri Apr  3 04:17:29 2026       
++---------------------------------------------------------------------------------------+
+| NVIDIA-SMI 535.230.02             Driver Version: 535.230.02   CUDA Version: 12.2     |
+|-----------------------------------------+----------------------+----------------------+
+| GPU  Name                 Persistence-M | Bus-Id        Disp.A | Volatile Uncorr. ECC |
+| Fan  Temp   Perf          Pwr:Usage/Cap |         Memory-Usage | GPU-Util  Compute M. |
+|                                         |                      |               MIG M. |
+|=========================================+======================+======================|
+|   0  Tesla V100-PCIE-32GB           On  | 00000000:5C:00.0 Off |                    0 |
+| N/A   40C    P0              26W / 250W |      0MiB / 32768MiB |      0%      Default |
+|                                         |                      |                  N/A |
++-----------------------------------------+----------------------+----------------------+
+|   1  Tesla V100-PCIE-32GB           On  | 00000000:D8:00.0 Off |                    0 |
+| N/A   34C    P0              27W / 250W |      0MiB / 32768MiB |      0%      Default |
+|                                         |                      |                  N/A |
++-----------------------------------------+----------------------+----------------------+
+                                                                                         
++---------------------------------------------------------------------------------------+
+| Processes:                                                                            |
+|  GPU   GI   CI        PID   Type   Process name                            GPU Memory |
+|        ID   ID                                                             Usage      |
+|=======================================================================================|
+|  No running processes found                                                           |
++---------------------------------------------------------------------------------------+
+>>> Step 1: Single-GPU baselines
+
+============================================================
+ Single-GPU Baseline: resnet50
+ Batch size: 32 | Steps: 50
+============================================================
+ Parameters: 25,557,032
+   Step 10/50 | Loss: 0.0030 | Time: 101.6ms
+   Step 20/50 | Loss: 0.0005 | Time: 101.7ms
+   Step 30/50 | Loss: 0.0002 | Time: 101.9ms
+   Step 40/50 | Loss: 0.0001 | Time: 102.0ms
+   Step 50/50 | Loss: 0.0000 | Time: 101.7ms
+
+ RESULTS: 101.75ms/step | 314.5 samples/s | 2.945 GB peak
+ Saved: results/single_gpu_resnet50.json
+
+============================================================
+ Single-GPU Baseline: vit_b_16
+ Batch size: 32 | Steps: 50
+============================================================
+ Parameters: 86,567,656
+   Step 10/50 | Loss: 3.4224 | Time: 344.9ms
+   Step 20/50 | Loss: 3.2968 | Time: 345.1ms
+   Step 30/50 | Loss: 3.0841 | Time: 345.9ms
+   Step 40/50 | Loss: 2.9325 | Time: 344.7ms
+   Step 50/50 | Loss: 2.5977 | Time: 344.7ms
+
+ RESULTS: 345.51ms/step | 92.6 samples/s | 4.842 GB peak
+ Saved: results/single_gpu_vit_b_16.json
+>>> Step 2: DDP
+
+============================================================
+ DDP Benchmark: resnet50
+ World size: 2 | Batch/GPU: 32
+============================================================
+bc11u11n2:898042:898042 [0] NCCL INFO Bootstrap : Using ibs1:192.168.251.104<0>
+bc11u11n2:898042:898042 [0] NCCL INFO NET/Plugin: No plugin found (libnccl-net.so)
+bc11u11n2:898042:898042 [0] NCCL INFO NET/Plugin: Plugin load returned 2 : libnccl-net.so: cannot open shared object file: No such file or directory : when loading libnccl-net.so
+bc11u11n2:898042:898042 [0] NCCL INFO NET/Plugin: Using internal network plugin.
+bc11u11n2:898042:898042 [0] NCCL INFO cudaDriverVersion 12020
+NCCL version 2.21.5+cuda12.4
+bc11u11n2:898042:898061 [0] NCCL INFO NET/IB : Using [0]mlx5_0:1/RoCE [1]hfi1_0:1/IB [RO]; OOB ibs1:192.168.251.104<0>
+bc11u11n2:898042:898061 [0] NCCL INFO Using non-device net plugin version 0
+bc11u11n2:898042:898061 [0] NCCL INFO Using network IB
+bc11u11n2:898043:898043 [1] NCCL INFO cudaDriverVersion 12020
+bc11u11n2:898043:898043 [1] NCCL INFO Bootstrap : Using ibs1:192.168.251.104<0>
+bc11u11n2:898043:898043 [1] NCCL INFO NET/Plugin: No plugin found (libnccl-net.so)
+bc11u11n2:898043:898043 [1] NCCL INFO NET/Plugin: Plugin load returned 2 : libnccl-net.so: cannot open shared object file: No such file or directory : when loading libnccl-net.so
+bc11u11n2:898043:898043 [1] NCCL INFO NET/Plugin: Using internal network plugin.
+bc11u11n2:898043:898068 [1] NCCL INFO NET/IB : Using [0]mlx5_0:1/RoCE [1]hfi1_0:1/IB [RO]; OOB ibs1:192.168.251.104<0>
+bc11u11n2:898043:898068 [1] NCCL INFO Using non-device net plugin version 0
+bc11u11n2:898043:898068 [1] NCCL INFO Using network IB
+bc11u11n2:898043:898068 [1] NCCL INFO ncclCommInitRank comm 0x92a7dc0 rank 1 nranks 2 cudaDev 1 nvmlDev 1 busId d8000 commId 0x4a87b451497e69ca - Init START
+bc11u11n2:898042:898061 [0] NCCL INFO ncclCommInitRank comm 0x93ca200 rank 0 nranks 2 cudaDev 0 nvmlDev 0 busId 5c000 commId 0x4a87b451497e69ca - Init START
+bc11u11n2:898043:898068 [1] NCCL INFO Setting affinity for GPU 1 to f0000000,00f00000
+bc11u11n2:898042:898061 [0] NCCL INFO Setting affinity for GPU 0 to 0f00,0000000f
+bc11u11n2:898042:898061 [0] NCCL INFO comm 0x93ca200 rank 0 nRanks 2 nNodes 1 localRanks 2 localRank 0 MNNVL 0
+bc11u11n2:898043:898068 [1] NCCL INFO comm 0x92a7dc0 rank 1 nRanks 2 nNodes 1 localRanks 2 localRank 1 MNNVL 0
+bc11u11n2:898042:898061 [0] NCCL INFO Channel 00/02 :    0   1
+bc11u11n2:898042:898061 [0] NCCL INFO Channel 01/02 :    0   1
+bc11u11n2:898042:898061 [0] NCCL INFO Trees [0] 1/-1/-1->0->-1 [1] 1/-1/-1->0->-1
+bc11u11n2:898043:898068 [1] NCCL INFO Trees [0] -1/-1/-1->1->0 [1] -1/-1/-1->1->0
+bc11u11n2:898042:898061 [0] NCCL INFO P2P Chunksize set to 131072
+bc11u11n2:898043:898068 [1] NCCL INFO P2P Chunksize set to 131072
+bc11u11n2:898042:898061 [0] NCCL INFO Channel 00 : 0[0] -> 1[1] via SHM/direct/direct
+bc11u11n2:898043:898068 [1] NCCL INFO Channel 00 : 1[1] -> 0[0] via SHM/direct/direct
+bc11u11n2:898042:898061 [0] NCCL INFO Channel 01 : 0[0] -> 1[1] via SHM/direct/direct
+bc11u11n2:898043:898068 [1] NCCL INFO Channel 01 : 1[1] -> 0[0] via SHM/direct/direct
+bc11u11n2:898042:898061 [0] NCCL INFO Connected all rings
+bc11u11n2:898042:898061 [0] NCCL INFO Connected all trees
+bc11u11n2:898043:898068 [1] NCCL INFO Connected all rings
+bc11u11n2:898043:898068 [1] NCCL INFO Connected all trees
+bc11u11n2:898043:898068 [1] NCCL INFO threadThresholds 8/8/64 | 16/8/64 | 512 | 512
+bc11u11n2:898043:898068 [1] NCCL INFO 2 coll channels, 2 collnet channels, 0 nvls channels, 2 p2p channels, 2 p2p channels per peer
+bc11u11n2:898042:898061 [0] NCCL INFO threadThresholds 8/8/64 | 16/8/64 | 512 | 512
+bc11u11n2:898042:898061 [0] NCCL INFO 2 coll channels, 2 collnet channels, 0 nvls channels, 2 p2p channels, 2 p2p channels per peer
+bc11u11n2:898042:898061 [0] NCCL INFO TUNER/Plugin: Plugin load returned 2 : libnccl-net.so: cannot open shared object file: No such file or directory : when loading libnccl-tuner.so
+bc11u11n2:898042:898061 [0] NCCL INFO TUNER/Plugin: Using internal tuner plugin.
+bc11u11n2:898043:898068 [1] NCCL INFO TUNER/Plugin: Plugin load returned 2 : libnccl-net.so: cannot open shared object file: No such file or directory : when loading libnccl-tuner.so
+bc11u11n2:898042:898061 [0] NCCL INFO ncclCommInitRank comm 0x93ca200 rank 0 nranks 2 cudaDev 0 nvmlDev 0 busId 5c000 commId 0x4a87b451497e69ca - Init COMPLETE
+bc11u11n2:898043:898068 [1] NCCL INFO TUNER/Plugin: Using internal tuner plugin.
+bc11u11n2:898043:898068 [1] NCCL INFO ncclCommInitRank comm 0x92a7dc0 rank 1 nranks 2 cudaDev 1 nvmlDev 1 busId d8000 commId 0x4a87b451497e69ca - Init COMPLETE
+   Step 10/50 | Loss: 0.0086 | Time: 110.6ms
+   Step 20/50 | Loss: 0.0012 | Time: 110.4ms
+   Step 30/50 | Loss: 0.0003 | Time: 110.6ms
+   Step 40/50 | Loss: 0.0001 | Time: 110.9ms
+   Step 50/50 | Loss: 0.0001 | Time: 110.5ms
+bc11u11n2:898043:898072 [1] NCCL INFO [Service thread] Connection closed by localRank 1
+
+ RESULTS: 110.50ms/step | 579.2 samples/s | 3.041 GB peak
+ Saved: results/ddp_resnet50_2gpu.json
+bc11u11n2:898042:898071 [0] NCCL INFO [Service thread] Connection closed by localRank 0
+bc11u11n2:898043:898081 [1] NCCL INFO comm 0x92a7dc0 rank 1 nranks 2 cudaDev 1 busId d8000 - Abort COMPLETE
+bc11u11n2:898042:898082 [0] NCCL INFO comm 0x93ca200 rank 0 nranks 2 cudaDev 0 busId 5c000 - Abort COMPLETE
+
+============================================================
+ DDP Benchmark: vit_b_16
+ World size: 2 | Batch/GPU: 32
+============================================================
+bc11u11n2:898089:898089 [0] NCCL INFO Bootstrap : Using ibs1:192.168.251.104<0>
+bc11u11n2:898089:898089 [0] NCCL INFO NET/Plugin: No plugin found (libnccl-net.so)
+bc11u11n2:898089:898089 [0] NCCL INFO NET/Plugin: Plugin load returned 2 : libnccl-net.so: cannot open shared object file: No such file or directory : when loading libnccl-net.so
+bc11u11n2:898089:898089 [0] NCCL INFO NET/Plugin: Using internal network plugin.
+bc11u11n2:898089:898089 [0] NCCL INFO cudaDriverVersion 12020
+NCCL version 2.21.5+cuda12.4
+bc11u11n2:898090:898090 [1] NCCL INFO cudaDriverVersion 12020
+bc11u11n2:898090:898090 [1] NCCL INFO Bootstrap : Using ibs1:192.168.251.104<0>
+bc11u11n2:898090:898090 [1] NCCL INFO NET/Plugin: No plugin found (libnccl-net.so)
+bc11u11n2:898090:898090 [1] NCCL INFO NET/Plugin: Plugin load returned 2 : libnccl-net.so: cannot open shared object file: No such file or directory : when loading libnccl-net.so
+bc11u11n2:898090:898090 [1] NCCL INFO NET/Plugin: Using internal network plugin.
+bc11u11n2:898089:898154 [0] NCCL INFO NET/IB : Using [0]mlx5_0:1/RoCE [1]hfi1_0:1/IB [RO]; OOB ibs1:192.168.251.104<0>
+bc11u11n2:898089:898154 [0] NCCL INFO Using non-device net plugin version 0
+bc11u11n2:898089:898154 [0] NCCL INFO Using network IB
+bc11u11n2:898090:898158 [1] NCCL INFO NET/IB : Using [0]mlx5_0:1/RoCE [1]hfi1_0:1/IB [RO]; OOB ibs1:192.168.251.104<0>
+bc11u11n2:898090:898158 [1] NCCL INFO Using non-device net plugin version 0
+bc11u11n2:898090:898158 [1] NCCL INFO Using network IB
+bc11u11n2:898089:898154 [0] NCCL INFO ncclCommInitRank comm 0x91157c0 rank 0 nranks 2 cudaDev 0 nvmlDev 0 busId 5c000 commId 0xd0564e32aae73023 - Init START
+bc11u11n2:898090:898158 [1] NCCL INFO ncclCommInitRank comm 0x9e98bc0 rank 1 nranks 2 cudaDev 1 nvmlDev 1 busId d8000 commId 0xd0564e32aae73023 - Init START
+bc11u11n2:898089:898154 [0] NCCL INFO Setting affinity for GPU 0 to 0f00,0000000f
+bc11u11n2:898090:898158 [1] NCCL INFO Setting affinity for GPU 1 to f0000000,00f00000
+bc11u11n2:898090:898158 [1] NCCL INFO comm 0x9e98bc0 rank 1 nRanks 2 nNodes 1 localRanks 2 localRank 1 MNNVL 0
+bc11u11n2:898089:898154 [0] NCCL INFO comm 0x91157c0 rank 0 nRanks 2 nNodes 1 localRanks 2 localRank 0 MNNVL 0
+bc11u11n2:898090:898158 [1] NCCL INFO Trees [0] -1/-1/-1->1->0 [1] -1/-1/-1->1->0
+bc11u11n2:898090:898158 [1] NCCL INFO P2P Chunksize set to 131072
+bc11u11n2:898089:898154 [0] NCCL INFO Channel 00/02 :    0   1
+bc11u11n2:898089:898154 [0] NCCL INFO Channel 01/02 :    0   1
+bc11u11n2:898089:898154 [0] NCCL INFO Trees [0] 1/-1/-1->0->-1 [1] 1/-1/-1->0->-1
+bc11u11n2:898089:898154 [0] NCCL INFO P2P Chunksize set to 131072
+bc11u11n2:898090:898158 [1] NCCL INFO Channel 00 : 1[1] -> 0[0] via SHM/direct/direct
+bc11u11n2:898089:898154 [0] NCCL INFO Channel 00 : 0[0] -> 1[1] via SHM/direct/direct
+bc11u11n2:898089:898154 [0] NCCL INFO Channel 01 : 0[0] -> 1[1] via SHM/direct/direct
+bc11u11n2:898090:898158 [1] NCCL INFO Channel 01 : 1[1] -> 0[0] via SHM/direct/direct
+bc11u11n2:898089:898154 [0] NCCL INFO Connected all rings
+bc11u11n2:898089:898154 [0] NCCL INFO Connected all trees
+bc11u11n2:898090:898158 [1] NCCL INFO Connected all rings
+bc11u11n2:898090:898158 [1] NCCL INFO Connected all trees
+bc11u11n2:898090:898158 [1] NCCL INFO threadThresholds 8/8/64 | 16/8/64 | 512 | 512
+bc11u11n2:898090:898158 [1] NCCL INFO 2 coll channels, 2 collnet channels, 0 nvls channels, 2 p2p channels, 2 p2p channels per peer
+bc11u11n2:898089:898154 [0] NCCL INFO threadThresholds 8/8/64 | 16/8/64 | 512 | 512
+bc11u11n2:898089:898154 [0] NCCL INFO 2 coll channels, 2 collnet channels, 0 nvls channels, 2 p2p channels, 2 p2p channels per peer
+bc11u11n2:898090:898158 [1] NCCL INFO TUNER/Plugin: Plugin load returned 2 : libnccl-net.so: cannot open shared object file: No such file or directory : when loading libnccl-tuner.so
+bc11u11n2:898090:898158 [1] NCCL INFO TUNER/Plugin: Using internal tuner plugin.
+bc11u11n2:898090:898158 [1] NCCL INFO ncclCommInitRank comm 0x9e98bc0 rank 1 nranks 2 cudaDev 1 nvmlDev 1 busId d8000 commId 0xd0564e32aae73023 - Init COMPLETE
+bc11u11n2:898089:898154 [0] NCCL INFO TUNER/Plugin: Plugin load returned 2 : libnccl-net.so: cannot open shared object file: No such file or directory : when loading libnccl-tuner.so
+bc11u11n2:898089:898154 [0] NCCL INFO TUNER/Plugin: Using internal tuner plugin.
+bc11u11n2:898089:898154 [0] NCCL INFO ncclCommInitRank comm 0x91157c0 rank 0 nranks 2 cudaDev 0 nvmlDev 0 busId 5c000 commId 0xd0564e32aae73023 - Init COMPLETE
+   Step 10/50 | Loss: 8.2309 | Time: 360.5ms
+   Step 20/50 | Loss: 3.7728 | Time: 362.3ms
+   Step 30/50 | Loss: 3.7193 | Time: 358.5ms
+   Step 40/50 | Loss: 3.6761 | Time: 360.4ms
+   Step 50/50 | Loss: 3.2476 | Time: 362.7ms
+bc11u11n2:898090:898163 [1] NCCL INFO [Service thread] Connection closed by localRank 1
+
+ RESULTS: 359.92ms/step | 177.8 samples/s | 5.165 GB peak
+ Saved: results/ddp_vit_b_16_2gpu.json
+bc11u11n2:898089:898165 [0] NCCL INFO [Service thread] Connection closed by localRank 0
+bc11u11n2:898090:898176 [1] NCCL INFO comm 0x9e98bc0 rank 1 nranks 2 cudaDev 1 busId d8000 - Abort COMPLETE
+bc11u11n2:898089:898177 [0] NCCL INFO comm 0x91157c0 rank 0 nranks 2 cudaDev 0 busId 5c000 - Abort COMPLETE
+>>> Step 3: FSDP FULL_SHARD
+
+============================================================
+ FSDP Benchmark: resnet50
+ Sharding: FULL_SHARD | Mixed Precision: False
+ World size: 2 | Batch/GPU: 32
+============================================================
+bc11u11n2:898184:898184 [0] NCCL INFO Bootstrap : Using ibs1:192.168.251.104<0>
+bc11u11n2:898184:898184 [0] NCCL INFO NET/Plugin: No plugin found (libnccl-net.so)
+bc11u11n2:898184:898184 [0] NCCL INFO NET/Plugin: Plugin load returned 2 : libnccl-net.so: cannot open shared object file: No such file or directory : when loading libnccl-net.so
+bc11u11n2:898184:898184 [0] NCCL INFO NET/Plugin: Using internal network plugin.
+bc11u11n2:898184:898184 [0] NCCL INFO cudaDriverVersion 12020
+NCCL version 2.21.5+cuda12.4
+bc11u11n2:898185:898185 [1] NCCL INFO cudaDriverVersion 12020
+bc11u11n2:898185:898185 [1] NCCL INFO Bootstrap : Using ibs1:192.168.251.104<0>
+bc11u11n2:898185:898185 [1] NCCL INFO NET/Plugin: No plugin found (libnccl-net.so)
+bc11u11n2:898185:898185 [1] NCCL INFO NET/Plugin: Plugin load returned 2 : libnccl-net.so: cannot open shared object file: No such file or directory : when loading libnccl-net.so
+bc11u11n2:898185:898185 [1] NCCL INFO NET/Plugin: Using internal network plugin.
+bc11u11n2:898185:898208 [1] NCCL INFO NET/IB : Using [0]mlx5_0:1/RoCE [1]hfi1_0:1/IB [RO]; OOB ibs1:192.168.251.104<0>
+bc11u11n2:898184:898207 [0] NCCL INFO NET/IB : Using [0]mlx5_0:1/RoCE [1]hfi1_0:1/IB [RO]; OOB ibs1:192.168.251.104<0>
+bc11u11n2:898185:898208 [1] NCCL INFO Using non-device net plugin version 0
+bc11u11n2:898184:898207 [0] NCCL INFO Using non-device net plugin version 0
+bc11u11n2:898185:898208 [1] NCCL INFO Using network IB
+bc11u11n2:898184:898207 [0] NCCL INFO Using network IB
+bc11u11n2:898185:898208 [1] NCCL INFO ncclCommInitRank comm 0xaaa4820 rank 1 nranks 2 cudaDev 1 nvmlDev 1 busId d8000 commId 0x15e58bf97a031a60 - Init START
+bc11u11n2:898184:898207 [0] NCCL INFO ncclCommInitRank comm 0x80c73a0 rank 0 nranks 2 cudaDev 0 nvmlDev 0 busId 5c000 commId 0x15e58bf97a031a60 - Init START
+bc11u11n2:898184:898207 [0] NCCL INFO Setting affinity for GPU 0 to 0f00,0000000f
+bc11u11n2:898185:898208 [1] NCCL INFO Setting affinity for GPU 1 to f0000000,00f00000
+bc11u11n2:898185:898208 [1] NCCL INFO comm 0xaaa4820 rank 1 nRanks 2 nNodes 1 localRanks 2 localRank 1 MNNVL 0
+bc11u11n2:898184:898207 [0] NCCL INFO comm 0x80c73a0 rank 0 nRanks 2 nNodes 1 localRanks 2 localRank 0 MNNVL 0
+bc11u11n2:898185:898208 [1] NCCL INFO Trees [0] -1/-1/-1->1->0 [1] -1/-1/-1->1->0
+bc11u11n2:898185:898208 [1] NCCL INFO P2P Chunksize set to 131072
+bc11u11n2:898184:898207 [0] NCCL INFO Channel 00/02 :    0   1
+bc11u11n2:898184:898207 [0] NCCL INFO Channel 01/02 :    0   1
+bc11u11n2:898184:898207 [0] NCCL INFO Trees [0] 1/-1/-1->0->-1 [1] 1/-1/-1->0->-1
+bc11u11n2:898184:898207 [0] NCCL INFO P2P Chunksize set to 131072
+bc11u11n2:898185:898208 [1] NCCL INFO Channel 00 : 1[1] -> 0[0] via SHM/direct/direct
+bc11u11n2:898184:898207 [0] NCCL INFO Channel 00 : 0[0] -> 1[1] via SHM/direct/direct
+bc11u11n2:898184:898207 [0] NCCL INFO Channel 01 : 0[0] -> 1[1] via SHM/direct/direct
+bc11u11n2:898185:898208 [1] NCCL INFO Channel 01 : 1[1] -> 0[0] via SHM/direct/direct
+bc11u11n2:898184:898207 [0] NCCL INFO Connected all rings
+bc11u11n2:898184:898207 [0] NCCL INFO Connected all trees
+bc11u11n2:898185:898208 [1] NCCL INFO Connected all rings
+bc11u11n2:898185:898208 [1] NCCL INFO Connected all trees
+bc11u11n2:898185:898208 [1] NCCL INFO threadThresholds 8/8/64 | 16/8/64 | 512 | 512
+bc11u11n2:898185:898208 [1] NCCL INFO 2 coll channels, 2 collnet channels, 0 nvls channels, 2 p2p channels, 2 p2p channels per peer
+bc11u11n2:898184:898207 [0] NCCL INFO threadThresholds 8/8/64 | 16/8/64 | 512 | 512
+bc11u11n2:898184:898207 [0] NCCL INFO 2 coll channels, 2 collnet channels, 0 nvls channels, 2 p2p channels, 2 p2p channels per peer
+bc11u11n2:898185:898208 [1] NCCL INFO TUNER/Plugin: Plugin load returned 2 : libnccl-net.so: cannot open shared object file: No such file or directory : when loading libnccl-tuner.so
+bc11u11n2:898185:898208 [1] NCCL INFO TUNER/Plugin: Using internal tuner plugin.
+bc11u11n2:898185:898208 [1] NCCL INFO ncclCommInitRank comm 0xaaa4820 rank 1 nranks 2 cudaDev 1 nvmlDev 1 busId d8000 commId 0x15e58bf97a031a60 - Init COMPLETE
+bc11u11n2:898184:898207 [0] NCCL INFO TUNER/Plugin: Plugin load returned 2 : libnccl-net.so: cannot open shared object file: No such file or directory : when loading libnccl-tuner.so
+bc11u11n2:898184:898207 [0] NCCL INFO TUNER/Plugin: Using internal tuner plugin.
+bc11u11n2:898184:898207 [0] NCCL INFO ncclCommInitRank comm 0x80c73a0 rank 0 nranks 2 cudaDev 0 nvmlDev 0 busId 5c000 commId 0x15e58bf97a031a60 - Init COMPLETE
+   Step 10/50 | Loss: 0.0100 | Time: 120.0ms
+   Step 20/50 | Loss: 0.0013 | Time: 119.0ms
+   Step 30/50 | Loss: 0.0004 | Time: 118.7ms
+   Step 40/50 | Loss: 0.0001 | Time: 118.9ms
+   Step 50/50 | Loss: 0.0001 | Time: 118.8ms
+
+ RESULTS: 118.85ms/step | 538.5 samples/s | 2.811 GB peak
+bc11u11n2:898185:898215 [1] NCCL INFO [Service thread] Connection closed by localRank 1
+ Saved: results/fsdp_full_shard_resnet50_2gpu.json
+bc11u11n2:898184:898213 [0] NCCL INFO [Service thread] Connection closed by localRank 0
+bc11u11n2:898185:898223 [1] NCCL INFO comm 0xaaa4820 rank 1 nranks 2 cudaDev 1 busId d8000 - Abort COMPLETE
+bc11u11n2:898184:898224 [0] NCCL INFO comm 0x80c73a0 rank 0 nranks 2 cudaDev 0 busId 5c000 - Abort COMPLETE
+
+============================================================
+ FSDP Benchmark: vit_b_16
+ Sharding: FULL_SHARD | Mixed Precision: False
+ World size: 2 | Batch/GPU: 32
+============================================================
+bc11u11n2:898248:898248 [0] NCCL INFO Bootstrap : Using ibs1:192.168.251.104<0>
+bc11u11n2:898248:898248 [0] NCCL INFO NET/Plugin: No plugin found (libnccl-net.so)
+bc11u11n2:898248:898248 [0] NCCL INFO NET/Plugin: Plugin load returned 2 : libnccl-net.so: cannot open shared object file: No such file or directory : when loading libnccl-net.so
+bc11u11n2:898248:898248 [0] NCCL INFO NET/Plugin: Using internal network plugin.
+bc11u11n2:898248:898248 [0] NCCL INFO cudaDriverVersion 12020
+NCCL version 2.21.5+cuda12.4
+bc11u11n2:898248:898314 [0] NCCL INFO NET/IB : Using [0]mlx5_0:1/RoCE [1]hfi1_0:1/IB [RO]; OOB ibs1:192.168.251.104<0>
+bc11u11n2:898248:898314 [0] NCCL INFO Using non-device net plugin version 0
+bc11u11n2:898248:898314 [0] NCCL INFO Using network IB
+bc11u11n2:898249:898249 [1] NCCL INFO cudaDriverVersion 12020
+bc11u11n2:898249:898249 [1] NCCL INFO Bootstrap : Using ibs1:192.168.251.104<0>
+bc11u11n2:898249:898249 [1] NCCL INFO NET/Plugin: No plugin found (libnccl-net.so)
+bc11u11n2:898249:898249 [1] NCCL INFO NET/Plugin: Plugin load returned 2 : libnccl-net.so: cannot open shared object file: No such file or directory : when loading libnccl-net.so
+bc11u11n2:898249:898249 [1] NCCL INFO NET/Plugin: Using internal network plugin.
+bc11u11n2:898249:898320 [1] NCCL INFO NET/IB : Using [0]mlx5_0:1/RoCE [1]hfi1_0:1/IB [RO]; OOB ibs1:192.168.251.104<0>
+bc11u11n2:898249:898320 [1] NCCL INFO Using non-device net plugin version 0
+bc11u11n2:898249:898320 [1] NCCL INFO Using network IB
+bc11u11n2:898249:898320 [1] NCCL INFO ncclCommInitRank comm 0xb491f00 rank 1 nranks 2 cudaDev 1 nvmlDev 1 busId d8000 commId 0xba98ef6c3c6eae70 - Init START
+bc11u11n2:898248:898314 [0] NCCL INFO ncclCommInitRank comm 0xb631ad0 rank 0 nranks 2 cudaDev 0 nvmlDev 0 busId 5c000 commId 0xba98ef6c3c6eae70 - Init START
+bc11u11n2:898249:898320 [1] NCCL INFO Setting affinity for GPU 1 to f0000000,00f00000
+bc11u11n2:898248:898314 [0] NCCL INFO Setting affinity for GPU 0 to 0f00,0000000f
+bc11u11n2:898249:898320 [1] NCCL INFO comm 0xb491f00 rank 1 nRanks 2 nNodes 1 localRanks 2 localRank 1 MNNVL 0
+bc11u11n2:898248:898314 [0] NCCL INFO comm 0xb631ad0 rank 0 nRanks 2 nNodes 1 localRanks 2 localRank 0 MNNVL 0
+bc11u11n2:898249:898320 [1] NCCL INFO Trees [0] -1/-1/-1->1->0 [1] -1/-1/-1->1->0
+bc11u11n2:898249:898320 [1] NCCL INFO P2P Chunksize set to 131072
+bc11u11n2:898248:898314 [0] NCCL INFO Channel 00/02 :    0   1
+bc11u11n2:898248:898314 [0] NCCL INFO Channel 01/02 :    0   1
+bc11u11n2:898248:898314 [0] NCCL INFO Trees [0] 1/-1/-1->0->-1 [1] 1/-1/-1->0->-1
+bc11u11n2:898248:898314 [0] NCCL INFO P2P Chunksize set to 131072
+bc11u11n2:898249:898320 [1] NCCL INFO Channel 00 : 1[1] -> 0[0] via SHM/direct/direct
+bc11u11n2:898248:898314 [0] NCCL INFO Channel 00 : 0[0] -> 1[1] via SHM/direct/direct
+bc11u11n2:898249:898320 [1] NCCL INFO Channel 01 : 1[1] -> 0[0] via SHM/direct/direct
+bc11u11n2:898248:898314 [0] NCCL INFO Channel 01 : 0[0] -> 1[1] via SHM/direct/direct
+bc11u11n2:898248:898314 [0] NCCL INFO Connected all rings
+bc11u11n2:898248:898314 [0] NCCL INFO Connected all trees
+bc11u11n2:898249:898320 [1] NCCL INFO Connected all rings
+bc11u11n2:898249:898320 [1] NCCL INFO Connected all trees
+bc11u11n2:898249:898320 [1] NCCL INFO threadThresholds 8/8/64 | 16/8/64 | 512 | 512
+bc11u11n2:898249:898320 [1] NCCL INFO 2 coll channels, 2 collnet channels, 0 nvls channels, 2 p2p channels, 2 p2p channels per peer
+bc11u11n2:898248:898314 [0] NCCL INFO threadThresholds 8/8/64 | 16/8/64 | 512 | 512
+bc11u11n2:898248:898314 [0] NCCL INFO 2 coll channels, 2 collnet channels, 0 nvls channels, 2 p2p channels, 2 p2p channels per peer
+bc11u11n2:898249:898320 [1] NCCL INFO TUNER/Plugin: Plugin load returned 2 : libnccl-net.so: cannot open shared object file: No such file or directory : when loading libnccl-tuner.so
+bc11u11n2:898249:898320 [1] NCCL INFO TUNER/Plugin: Using internal tuner plugin.
+bc11u11n2:898249:898320 [1] NCCL INFO ncclCommInitRank comm 0xb491f00 rank 1 nranks 2 cudaDev 1 nvmlDev 1 busId d8000 commId 0xba98ef6c3c6eae70 - Init COMPLETE
+bc11u11n2:898248:898314 [0] NCCL INFO TUNER/Plugin: Plugin load returned 2 : libnccl-net.so: cannot open shared object file: No such file or directory : when loading libnccl-tuner.so
+bc11u11n2:898248:898314 [0] NCCL INFO TUNER/Plugin: Using internal tuner plugin.
+bc11u11n2:898248:898314 [0] NCCL INFO ncclCommInitRank comm 0xb631ad0 rank 0 nranks 2 cudaDev 0 nvmlDev 0 busId 5c000 commId 0xba98ef6c3c6eae70 - Init COMPLETE
+   Step 10/50 | Loss: 4.0643 | Time: 378.5ms
+   Step 20/50 | Loss: 4.0821 | Time: 378.1ms
+   Step 30/50 | Loss: 3.8464 | Time: 378.6ms
+   Step 40/50 | Loss: 3.7204 | Time: 377.9ms
+   Step 50/50 | Loss: 3.9323 | Time: 377.9ms
+
+ RESULTS: 378.47ms/step | 169.1 samples/s | 4.391 GB peak
+bc11u11n2:898249:898323 [1] NCCL INFO [Service thread] Connection closed by localRank 1
+ Saved: results/fsdp_full_shard_vit_b_16_2gpu.json
+bc11u11n2:898248:898324 [0] NCCL INFO [Service thread] Connection closed by localRank 0
+bc11u11n2:898249:898333 [1] NCCL INFO comm 0xb491f00 rank 1 nranks 2 cudaDev 1 busId d8000 - Abort COMPLETE
+bc11u11n2:898248:898334 [0] NCCL INFO comm 0xb631ad0 rank 0 nranks 2 cudaDev 0 busId 5c000 - Abort COMPLETE
+>>> Step 4: FSDP SHARD_GRAD_OP
+
+============================================================
+ FSDP Benchmark: resnet50
+ Sharding: SHARD_GRAD_OP | Mixed Precision: False
+ World size: 2 | Batch/GPU: 32
+============================================================
+bc11u11n2:898341:898341 [0] NCCL INFO Bootstrap : Using ibs1:192.168.251.104<0>
+bc11u11n2:898341:898341 [0] NCCL INFO NET/Plugin: No plugin found (libnccl-net.so)
+bc11u11n2:898341:898341 [0] NCCL INFO NET/Plugin: Plugin load returned 2 : libnccl-net.so: cannot open shared object file: No such file or directory : when loading libnccl-net.so
+bc11u11n2:898341:898341 [0] NCCL INFO NET/Plugin: Using internal network plugin.
+bc11u11n2:898341:898341 [0] NCCL INFO cudaDriverVersion 12020
+NCCL version 2.21.5+cuda12.4
+bc11u11n2:898342:898342 [1] NCCL INFO cudaDriverVersion 12020
+bc11u11n2:898342:898342 [1] NCCL INFO Bootstrap : Using ibs1:192.168.251.104<0>
+bc11u11n2:898342:898342 [1] NCCL INFO NET/Plugin: No plugin found (libnccl-net.so)
+bc11u11n2:898342:898342 [1] NCCL INFO NET/Plugin: Plugin load returned 2 : libnccl-net.so: cannot open shared object file: No such file or directory : when loading libnccl-net.so
+bc11u11n2:898342:898342 [1] NCCL INFO NET/Plugin: Using internal network plugin.
+bc11u11n2:898342:898370 [1] NCCL INFO NET/IB : Using [0]mlx5_0:1/RoCE [1]hfi1_0:1/IB [RO]; OOB ibs1:192.168.251.104<0>
+bc11u11n2:898342:898370 [1] NCCL INFO Using non-device net plugin version 0
+bc11u11n2:898342:898370 [1] NCCL INFO Using network IB
+bc11u11n2:898341:898369 [0] NCCL INFO NET/IB : Using [0]mlx5_0:1/RoCE [1]hfi1_0:1/IB [RO]; OOB ibs1:192.168.251.104<0>
+bc11u11n2:898341:898369 [0] NCCL INFO Using non-device net plugin version 0
+bc11u11n2:898341:898369 [0] NCCL INFO Using network IB
+bc11u11n2:898342:898370 [1] NCCL INFO ncclCommInitRank comm 0xa7b1530 rank 1 nranks 2 cudaDev 1 nvmlDev 1 busId d8000 commId 0x486f3623f52eb69e - Init START
+bc11u11n2:898341:898369 [0] NCCL INFO ncclCommInitRank comm 0x9a8a140 rank 0 nranks 2 cudaDev 0 nvmlDev 0 busId 5c000 commId 0x486f3623f52eb69e - Init START
+bc11u11n2:898341:898369 [0] NCCL INFO Setting affinity for GPU 0 to 0f00,0000000f
+bc11u11n2:898342:898370 [1] NCCL INFO Setting affinity for GPU 1 to f0000000,00f00000
+bc11u11n2:898342:898370 [1] NCCL INFO comm 0xa7b1530 rank 1 nRanks 2 nNodes 1 localRanks 2 localRank 1 MNNVL 0
+bc11u11n2:898341:898369 [0] NCCL INFO comm 0x9a8a140 rank 0 nRanks 2 nNodes 1 localRanks 2 localRank 0 MNNVL 0
+bc11u11n2:898342:898370 [1] NCCL INFO Trees [0] -1/-1/-1->1->0 [1] -1/-1/-1->1->0
+bc11u11n2:898342:898370 [1] NCCL INFO P2P Chunksize set to 131072
+bc11u11n2:898341:898369 [0] NCCL INFO Channel 00/02 :    0   1
+bc11u11n2:898341:898369 [0] NCCL INFO Channel 01/02 :    0   1
+bc11u11n2:898341:898369 [0] NCCL INFO Trees [0] 1/-1/-1->0->-1 [1] 1/-1/-1->0->-1
+bc11u11n2:898341:898369 [0] NCCL INFO P2P Chunksize set to 131072
+bc11u11n2:898341:898369 [0] NCCL INFO Channel 00 : 0[0] -> 1[1] via SHM/direct/direct
+bc11u11n2:898342:898370 [1] NCCL INFO Channel 00 : 1[1] -> 0[0] via SHM/direct/direct
+bc11u11n2:898341:898369 [0] NCCL INFO Channel 01 : 0[0] -> 1[1] via SHM/direct/direct
+bc11u11n2:898342:898370 [1] NCCL INFO Channel 01 : 1[1] -> 0[0] via SHM/direct/direct
+bc11u11n2:898341:898369 [0] NCCL INFO Connected all rings
+bc11u11n2:898341:898369 [0] NCCL INFO Connected all trees
+bc11u11n2:898342:898370 [1] NCCL INFO Connected all rings
+bc11u11n2:898342:898370 [1] NCCL INFO Connected all trees
+bc11u11n2:898342:898370 [1] NCCL INFO threadThresholds 8/8/64 | 16/8/64 | 512 | 512
+bc11u11n2:898342:898370 [1] NCCL INFO 2 coll channels, 2 collnet channels, 0 nvls channels, 2 p2p channels, 2 p2p channels per peer
+bc11u11n2:898341:898369 [0] NCCL INFO threadThresholds 8/8/64 | 16/8/64 | 512 | 512
+bc11u11n2:898341:898369 [0] NCCL INFO 2 coll channels, 2 collnet channels, 0 nvls channels, 2 p2p channels, 2 p2p channels per peer
+bc11u11n2:898342:898370 [1] NCCL INFO TUNER/Plugin: Plugin load returned 2 : libnccl-net.so: cannot open shared object file: No such file or directory : when loading libnccl-tuner.so
+bc11u11n2:898342:898370 [1] NCCL INFO TUNER/Plugin: Using internal tuner plugin.
+bc11u11n2:898342:898370 [1] NCCL INFO ncclCommInitRank comm 0xa7b1530 rank 1 nranks 2 cudaDev 1 nvmlDev 1 busId d8000 commId 0x486f3623f52eb69e - Init COMPLETE
+bc11u11n2:898341:898369 [0] NCCL INFO TUNER/Plugin: Plugin load returned 2 : libnccl-net.so: cannot open shared object file: No such file or directory : when loading libnccl-tuner.so
+bc11u11n2:898341:898369 [0] NCCL INFO TUNER/Plugin: Using internal tuner plugin.
+bc11u11n2:898341:898369 [0] NCCL INFO ncclCommInitRank comm 0x9a8a140 rank 0 nranks 2 cudaDev 0 nvmlDev 0 busId 5c000 commId 0x486f3623f52eb69e - Init COMPLETE
+   Step 10/50 | Loss: 0.0097 | Time: 108.2ms
+   Step 20/50 | Loss: 0.0013 | Time: 107.5ms
+   Step 30/50 | Loss: 0.0003 | Time: 107.9ms
+   Step 40/50 | Loss: 0.0001 | Time: 108.1ms
+   Step 50/50 | Loss: 0.0001 | Time: 108.0ms
+
+ RESULTS: 107.98ms/step | 592.7 samples/s | 2.879 GB peak
+bc11u11n2:898342:898377 [1] NCCL INFO [Service thread] Connection closed by localRank 1
+ Saved: results/fsdp_shard_grad_op_resnet50_2gpu.json
+bc11u11n2:898341:898375 [0] NCCL INFO [Service thread] Connection closed by localRank 0
+bc11u11n2:898342:898385 [1] NCCL INFO comm 0xa7b1530 rank 1 nranks 2 cudaDev 1 busId d8000 - Abort COMPLETE
+bc11u11n2:898341:898386 [0] NCCL INFO comm 0x9a8a140 rank 0 nranks 2 cudaDev 0 busId 5c000 - Abort COMPLETE
+>>> Step 5: FSDP + Mixed Precision
+
+============================================================
+ FSDP Benchmark: resnet50
+ Sharding: FULL_SHARD | Mixed Precision: True
+ World size: 2 | Batch/GPU: 32
+============================================================
+bc11u11n2:898393:898393 [0] NCCL INFO Bootstrap : Using ibs1:192.168.251.104<0>
+bc11u11n2:898393:898393 [0] NCCL INFO NET/Plugin: No plugin found (libnccl-net.so)
+bc11u11n2:898393:898393 [0] NCCL INFO NET/Plugin: Plugin load returned 2 : libnccl-net.so: cannot open shared object file: No such file or directory : when loading libnccl-net.so
+bc11u11n2:898393:898393 [0] NCCL INFO NET/Plugin: Using internal network plugin.
+bc11u11n2:898393:898393 [0] NCCL INFO cudaDriverVersion 12020
+NCCL version 2.21.5+cuda12.4
+bc11u11n2:898393:898455 [0] NCCL INFO NET/IB : Using [0]mlx5_0:1/RoCE [1]hfi1_0:1/IB [RO]; OOB ibs1:192.168.251.104<0>
+bc11u11n2:898393:898455 [0] NCCL INFO Using non-device net plugin version 0
+bc11u11n2:898393:898455 [0] NCCL INFO Using network IB
+bc11u11n2:898394:898394 [1] NCCL INFO cudaDriverVersion 12020
+bc11u11n2:898394:898394 [1] NCCL INFO Bootstrap : Using ibs1:192.168.251.104<0>
+bc11u11n2:898394:898394 [1] NCCL INFO NET/Plugin: No plugin found (libnccl-net.so)
+bc11u11n2:898394:898394 [1] NCCL INFO NET/Plugin: Plugin load returned 2 : libnccl-net.so: cannot open shared object file: No such file or directory : when loading libnccl-net.so
+bc11u11n2:898394:898394 [1] NCCL INFO NET/Plugin: Using internal network plugin.
+bc11u11n2:898394:898458 [1] NCCL INFO NET/IB : Using [0]mlx5_0:1/RoCE [1]hfi1_0:1/IB [RO]; OOB ibs1:192.168.251.104<0>
+bc11u11n2:898394:898458 [1] NCCL INFO Using non-device net plugin version 0
+bc11u11n2:898394:898458 [1] NCCL INFO Using network IB
+bc11u11n2:898394:898458 [1] NCCL INFO ncclCommInitRank comm 0xbf4d5e0 rank 1 nranks 2 cudaDev 1 nvmlDev 1 busId d8000 commId 0xd2282d619ac6fc34 - Init START
+bc11u11n2:898393:898455 [0] NCCL INFO ncclCommInitRank comm 0xb5e20e0 rank 0 nranks 2 cudaDev 0 nvmlDev 0 busId 5c000 commId 0xd2282d619ac6fc34 - Init START
+bc11u11n2:898394:898458 [1] NCCL INFO Setting affinity for GPU 1 to f0000000,00f00000
+bc11u11n2:898393:898455 [0] NCCL INFO Setting affinity for GPU 0 to 0f00,0000000f
+bc11u11n2:898394:898458 [1] NCCL INFO comm 0xbf4d5e0 rank 1 nRanks 2 nNodes 1 localRanks 2 localRank 1 MNNVL 0
+bc11u11n2:898393:898455 [0] NCCL INFO comm 0xb5e20e0 rank 0 nRanks 2 nNodes 1 localRanks 2 localRank 0 MNNVL 0
+bc11u11n2:898394:898458 [1] NCCL INFO Trees [0] -1/-1/-1->1->0 [1] -1/-1/-1->1->0
+bc11u11n2:898394:898458 [1] NCCL INFO P2P Chunksize set to 131072
+bc11u11n2:898393:898455 [0] NCCL INFO Channel 00/02 :    0   1
+bc11u11n2:898393:898455 [0] NCCL INFO Channel 01/02 :    0   1
+bc11u11n2:898393:898455 [0] NCCL INFO Trees [0] 1/-1/-1->0->-1 [1] 1/-1/-1->0->-1
+bc11u11n2:898393:898455 [0] NCCL INFO P2P Chunksize set to 131072
+bc11u11n2:898394:898458 [1] NCCL INFO Channel 00 : 1[1] -> 0[0] via SHM/direct/direct
+bc11u11n2:898393:898455 [0] NCCL INFO Channel 00 : 0[0] -> 1[1] via SHM/direct/direct
+bc11u11n2:898394:898458 [1] NCCL INFO Channel 01 : 1[1] -> 0[0] via SHM/direct/direct
+bc11u11n2:898393:898455 [0] NCCL INFO Channel 01 : 0[0] -> 1[1] via SHM/direct/direct
+bc11u11n2:898393:898455 [0] NCCL INFO Connected all rings
+bc11u11n2:898393:898455 [0] NCCL INFO Connected all trees
+bc11u11n2:898394:898458 [1] NCCL INFO Connected all rings
+bc11u11n2:898394:898458 [1] NCCL INFO Connected all trees
+bc11u11n2:898394:898458 [1] NCCL INFO threadThresholds 8/8/64 | 16/8/64 | 512 | 512
+bc11u11n2:898394:898458 [1] NCCL INFO 2 coll channels, 2 collnet channels, 0 nvls channels, 2 p2p channels, 2 p2p channels per peer
+bc11u11n2:898393:898455 [0] NCCL INFO threadThresholds 8/8/64 | 16/8/64 | 512 | 512
+bc11u11n2:898393:898455 [0] NCCL INFO 2 coll channels, 2 collnet channels, 0 nvls channels, 2 p2p channels, 2 p2p channels per peer
+bc11u11n2:898394:898458 [1] NCCL INFO TUNER/Plugin: Plugin load returned 2 : libnccl-net.so: cannot open shared object file: No such file or directory : when loading libnccl-tuner.so
+bc11u11n2:898394:898458 [1] NCCL INFO TUNER/Plugin: Using internal tuner plugin.
+bc11u11n2:898394:898458 [1] NCCL INFO ncclCommInitRank comm 0xbf4d5e0 rank 1 nranks 2 cudaDev 1 nvmlDev 1 busId d8000 commId 0xd2282d619ac6fc34 - Init COMPLETE
+bc11u11n2:898393:898455 [0] NCCL INFO TUNER/Plugin: Plugin load returned 2 : libnccl-net.so: cannot open shared object file: No such file or directory : when loading libnccl-tuner.so
+bc11u11n2:898393:898455 [0] NCCL INFO TUNER/Plugin: Using internal tuner plugin.
+bc11u11n2:898393:898455 [0] NCCL INFO ncclCommInitRank comm 0xb5e20e0 rank 0 nranks 2 cudaDev 0 nvmlDev 0 busId 5c000 commId 0xd2282d619ac6fc34 - Init COMPLETE
+   Step 10/50 | Loss: 0.0100 | Time: 185.2ms
+   Step 20/50 | Loss: 0.0016 | Time: 184.9ms
+   Step 30/50 | Loss: 0.0012 | Time: 185.9ms
+   Step 40/50 | Loss: 0.0011 | Time: 186.1ms
+   Step 50/50 | Loss: 0.0010 | Time: 185.4ms
+
+ RESULTS: 189.44ms/step | 337.8 samples/s | 2.203 GB peakbc11u11n2:898394:898463 [1] NCCL INFO [Service thread] Connection closed by localRank 1
+
+ Saved: results/fsdp_full_shard+mp_resnet50_2gpu.json
+bc11u11n2:898393:898461 [0] NCCL INFO [Service thread] Connection closed by localRank 0
+bc11u11n2:898394:898471 [1] NCCL INFO comm 0xbf4d5e0 rank 1 nranks 2 cudaDev 1 busId d8000 - Abort COMPLETE
+bc11u11n2:898393:898472 [0] NCCL INFO comm 0xb5e20e0 rank 0 nranks 2 cudaDev 0 busId 5c000 - Abort COMPLETE
+
+============================================================
+ FSDP Benchmark: vit_b_16
+ Sharding: FULL_SHARD | Mixed Precision: True
+ World size: 2 | Batch/GPU: 32
+============================================================
+bc11u11n2:898480:898480 [0] NCCL INFO Bootstrap : Using ibs1:192.168.251.104<0>
+bc11u11n2:898480:898480 [0] NCCL INFO NET/Plugin: No plugin found (libnccl-net.so)
+bc11u11n2:898480:898480 [0] NCCL INFO NET/Plugin: Plugin load returned 2 : libnccl-net.so: cannot open shared object file: No such file or directory : when loading libnccl-net.so
+bc11u11n2:898480:898480 [0] NCCL INFO NET/Plugin: Using internal network plugin.
+bc11u11n2:898480:898480 [0] NCCL INFO cudaDriverVersion 12020
+NCCL version 2.21.5+cuda12.4
+bc11u11n2:898481:898481 [1] NCCL INFO cudaDriverVersion 12020
+bc11u11n2:898481:898481 [1] NCCL INFO Bootstrap : Using ibs1:192.168.251.104<0>
+bc11u11n2:898481:898481 [1] NCCL INFO NET/Plugin: No plugin found (libnccl-net.so)
+bc11u11n2:898481:898481 [1] NCCL INFO NET/Plugin: Plugin load returned 2 : libnccl-net.so: cannot open shared object file: No such file or directory : when loading libnccl-net.so
+bc11u11n2:898481:898481 [1] NCCL INFO NET/Plugin: Using internal network plugin.
+bc11u11n2:898481:898521 [1] NCCL INFO NET/IB : Using [0]mlx5_0:1/RoCE [1]hfi1_0:1/IB [RO]; OOB ibs1:192.168.251.104<0>
+bc11u11n2:898481:898521 [1] NCCL INFO Using non-device net plugin version 0
+bc11u11n2:898481:898521 [1] NCCL INFO Using network IB
+bc11u11n2:898480:898520 [0] NCCL INFO NET/IB : Using [0]mlx5_0:1/RoCE [1]hfi1_0:1/IB [RO]; OOB ibs1:192.168.251.104<0>
+bc11u11n2:898480:898520 [0] NCCL INFO Using non-device net plugin version 0
+bc11u11n2:898480:898520 [0] NCCL INFO Using network IB
+bc11u11n2:898480:898520 [0] NCCL INFO ncclCommInitRank comm 0xb9e4200 rank 0 nranks 2 cudaDev 0 nvmlDev 0 busId 5c000 commId 0xbd8b236c0dbe47d8 - Init START
+bc11u11n2:898481:898521 [1] NCCL INFO ncclCommInitRank comm 0xb0620f0 rank 1 nranks 2 cudaDev 1 nvmlDev 1 busId d8000 commId 0xbd8b236c0dbe47d8 - Init START
+bc11u11n2:898480:898520 [0] NCCL INFO Setting affinity for GPU 0 to 0f00,0000000f
+bc11u11n2:898481:898521 [1] NCCL INFO Setting affinity for GPU 1 to f0000000,00f00000
+bc11u11n2:898481:898521 [1] NCCL INFO comm 0xb0620f0 rank 1 nRanks 2 nNodes 1 localRanks 2 localRank 1 MNNVL 0
+bc11u11n2:898480:898520 [0] NCCL INFO comm 0xb9e4200 rank 0 nRanks 2 nNodes 1 localRanks 2 localRank 0 MNNVL 0
+bc11u11n2:898481:898521 [1] NCCL INFO Trees [0] -1/-1/-1->1->0 [1] -1/-1/-1->1->0
+bc11u11n2:898481:898521 [1] NCCL INFO P2P Chunksize set to 131072
+bc11u11n2:898480:898520 [0] NCCL INFO Channel 00/02 :    0   1
+bc11u11n2:898480:898520 [0] NCCL INFO Channel 01/02 :    0   1
+bc11u11n2:898480:898520 [0] NCCL INFO Trees [0] 1/-1/-1->0->-1 [1] 1/-1/-1->0->-1
+bc11u11n2:898480:898520 [0] NCCL INFO P2P Chunksize set to 131072
+bc11u11n2:898480:898520 [0] NCCL INFO Channel 00 : 0[0] -> 1[1] via SHM/direct/direct
+bc11u11n2:898481:898521 [1] NCCL INFO Channel 00 : 1[1] -> 0[0] via SHM/direct/direct
+bc11u11n2:898480:898520 [0] NCCL INFO Channel 01 : 0[0] -> 1[1] via SHM/direct/direct
+bc11u11n2:898481:898521 [1] NCCL INFO Channel 01 : 1[1] -> 0[0] via SHM/direct/direct
+bc11u11n2:898480:898520 [0] NCCL INFO Connected all rings
+bc11u11n2:898480:898520 [0] NCCL INFO Connected all trees
+bc11u11n2:898481:898521 [1] NCCL INFO Connected all rings
+bc11u11n2:898481:898521 [1] NCCL INFO Connected all trees
+bc11u11n2:898481:898521 [1] NCCL INFO threadThresholds 8/8/64 | 16/8/64 | 512 | 512
+bc11u11n2:898481:898521 [1] NCCL INFO 2 coll channels, 2 collnet channels, 0 nvls channels, 2 p2p channels, 2 p2p channels per peer
+bc11u11n2:898480:898520 [0] NCCL INFO threadThresholds 8/8/64 | 16/8/64 | 512 | 512
+bc11u11n2:898480:898520 [0] NCCL INFO 2 coll channels, 2 collnet channels, 0 nvls channels, 2 p2p channels, 2 p2p channels per peer
+bc11u11n2:898481:898521 [1] NCCL INFO TUNER/Plugin: Plugin load returned 2 : libnccl-net.so: cannot open shared object file: No such file or directory : when loading libnccl-tuner.so
+bc11u11n2:898481:898521 [1] NCCL INFO TUNER/Plugin: Using internal tuner plugin.
+bc11u11n2:898481:898521 [1] NCCL INFO ncclCommInitRank comm 0xb0620f0 rank 1 nranks 2 cudaDev 1 nvmlDev 1 busId d8000 commId 0xbd8b236c0dbe47d8 - Init COMPLETE
+bc11u11n2:898480:898520 [0] NCCL INFO TUNER/Plugin: Plugin load returned 2 : libnccl-net.so: cannot open shared object file: No such file or directory : when loading libnccl-tuner.so
+bc11u11n2:898480:898520 [0] NCCL INFO TUNER/Plugin: Using internal tuner plugin.
+bc11u11n2:898480:898520 [0] NCCL INFO ncclCommInitRank comm 0xb9e4200 rank 0 nranks 2 cudaDev 0 nvmlDev 0 busId 5c000 commId 0xbd8b236c0dbe47d8 - Init COMPLETE
+   Step 10/50 | Loss: 4.1133 | Time: 144.0ms
+   Step 20/50 | Loss: 4.0039 | Time: 143.2ms
+   Step 30/50 | Loss: 3.4941 | Time: 146.5ms
+   Step 40/50 | Loss: 3.2129 | Time: 144.2ms
+   Step 50/50 | Loss: 2.7344 | Time: 143.8ms
+bc11u11n2:898481:898528 [1] NCCL INFO [Service thread] Connection closed by localRank 1
+
+ RESULTS: 143.92ms/step | 444.7 samples/s | 2.478 GB peak
+ Saved: results/fsdp_full_shard+mp_vit_b_16_2gpu.json
+bc11u11n2:898480:898526 [0] NCCL INFO [Service thread] Connection closed by localRank 0
+bc11u11n2:898481:898536 [1] NCCL INFO comm 0xb0620f0 rank 1 nranks 2 cudaDev 1 busId d8000 - Abort COMPLETE
+bc11u11n2:898480:898537 [0] NCCL INFO comm 0xb9e4200 rank 0 nranks 2 cudaDev 0 busId 5c000 - Abort COMPLETE
+>>> Step 6: OOM test
+
+============================================================
+ FSDP TEST: vit_l_16, bs=64/GPU, 2 GPUs
+============================================================
+bc11u11n2:898587:898587 [0] NCCL INFO Bootstrap : Using ibs1:192.168.251.104<0>
+bc11u11n2:898587:898587 [0] NCCL INFO NET/Plugin: No plugin found (libnccl-net.so)
+bc11u11n2:898587:898587 [0] NCCL INFO NET/Plugin: Plugin load returned 2 : libnccl-net.so: cannot open shared object file: No such file or directory : when loading libnccl-net.so
+bc11u11n2:898587:898587 [0] NCCL INFO NET/Plugin: Using internal network plugin.
+bc11u11n2:898587:898587 [0] NCCL INFO cudaDriverVersion 12020
+NCCL version 2.21.5+cuda12.4
+bc11u11n2:898587:898616 [0] NCCL INFO NET/IB : Using [0]mlx5_0:1/RoCE [1]hfi1_0:1/IB [RO]; OOB ibs1:192.168.251.104<0>
+bc11u11n2:898587:898616 [0] NCCL INFO Using non-device net plugin version 0
+bc11u11n2:898587:898616 [0] NCCL INFO Using network IB
+bc11u11n2:898588:898588 [1] NCCL INFO cudaDriverVersion 12020
+bc11u11n2:898588:898588 [1] NCCL INFO Bootstrap : Using ibs1:192.168.251.104<0>
+bc11u11n2:898588:898588 [1] NCCL INFO NET/Plugin: No plugin found (libnccl-net.so)
+bc11u11n2:898588:898588 [1] NCCL INFO NET/Plugin: Plugin load returned 2 : libnccl-net.so: cannot open shared object file: No such file or directory : when loading libnccl-net.so
+bc11u11n2:898588:898588 [1] NCCL INFO NET/Plugin: Using internal network plugin.
+bc11u11n2:898588:898619 [1] NCCL INFO NET/IB : Using [0]mlx5_0:1/RoCE [1]hfi1_0:1/IB [RO]; OOB ibs1:192.168.251.104<0>
+bc11u11n2:898588:898619 [1] NCCL INFO Using non-device net plugin version 0
+bc11u11n2:898588:898619 [1] NCCL INFO Using network IB
+bc11u11n2:898587:898616 [0] NCCL INFO ncclCommInitRank comm 0x9b1c520 rank 0 nranks 2 cudaDev 0 nvmlDev 0 busId 5c000 commId 0xbbf7e05afb0792bc - Init START
+bc11u11n2:898588:898619 [1] NCCL INFO ncclCommInitRank comm 0xb4db470 rank 1 nranks 2 cudaDev 1 nvmlDev 1 busId d8000 commId 0xbbf7e05afb0792bc - Init START
+bc11u11n2:898588:898619 [1] NCCL INFO Setting affinity for GPU 1 to f0000000,00f00000
+bc11u11n2:898587:898616 [0] NCCL INFO Setting affinity for GPU 0 to 0f00,0000000f
+bc11u11n2:898588:898619 [1] NCCL INFO comm 0xb4db470 rank 1 nRanks 2 nNodes 1 localRanks 2 localRank 1 MNNVL 0
+bc11u11n2:898588:898619 [1] NCCL INFO Trees [0] -1/-1/-1->1->0 [1] -1/-1/-1->1->0
+bc11u11n2:898588:898619 [1] NCCL INFO P2P Chunksize set to 131072
+bc11u11n2:898587:898616 [0] NCCL INFO comm 0x9b1c520 rank 0 nRanks 2 nNodes 1 localRanks 2 localRank 0 MNNVL 0
+bc11u11n2:898587:898616 [0] NCCL INFO Channel 00/02 :    0   1
+bc11u11n2:898587:898616 [0] NCCL INFO Channel 01/02 :    0   1
+bc11u11n2:898587:898616 [0] NCCL INFO Trees [0] 1/-1/-1->0->-1 [1] 1/-1/-1->0->-1
+bc11u11n2:898587:898616 [0] NCCL INFO P2P Chunksize set to 131072
+bc11u11n2:898588:898619 [1] NCCL INFO Channel 00 : 1[1] -> 0[0] via SHM/direct/direct
+bc11u11n2:898587:898616 [0] NCCL INFO Channel 00 : 0[0] -> 1[1] via SHM/direct/direct
+bc11u11n2:898587:898616 [0] NCCL INFO Channel 01 : 0[0] -> 1[1] via SHM/direct/direct
+bc11u11n2:898588:898619 [1] NCCL INFO Channel 01 : 1[1] -> 0[0] via SHM/direct/direct
+bc11u11n2:898587:898616 [0] NCCL INFO Connected all rings
+bc11u11n2:898587:898616 [0] NCCL INFO Connected all trees
+bc11u11n2:898588:898619 [1] NCCL INFO Connected all rings
+bc11u11n2:898588:898619 [1] NCCL INFO Connected all trees
+bc11u11n2:898588:898619 [1] NCCL INFO threadThresholds 8/8/64 | 16/8/64 | 512 | 512
+bc11u11n2:898588:898619 [1] NCCL INFO 2 coll channels, 2 collnet channels, 0 nvls channels, 2 p2p channels, 2 p2p channels per peer
+bc11u11n2:898587:898616 [0] NCCL INFO threadThresholds 8/8/64 | 16/8/64 | 512 | 512
+bc11u11n2:898587:898616 [0] NCCL INFO 2 coll channels, 2 collnet channels, 0 nvls channels, 2 p2p channels, 2 p2p channels per peer
+bc11u11n2:898588:898619 [1] NCCL INFO TUNER/Plugin: Plugin load returned 2 : libnccl-net.so: cannot open shared object file: No such file or directory : when loading libnccl-tuner.so
+bc11u11n2:898588:898619 [1] NCCL INFO TUNER/Plugin: Using internal tuner plugin.
+bc11u11n2:898588:898619 [1] NCCL INFO ncclCommInitRank comm 0xb4db470 rank 1 nranks 2 cudaDev 1 nvmlDev 1 busId d8000 commId 0xbbf7e05afb0792bc - Init COMPLETE
+bc11u11n2:898587:898616 [0] NCCL INFO TUNER/Plugin: Plugin load returned 2 : libnccl-net.so: cannot open shared object file: No such file or directory : when loading libnccl-tuner.so
+bc11u11n2:898587:898616 [0] NCCL INFO TUNER/Plugin: Using internal tuner plugin.
+bc11u11n2:898587:898616 [0] NCCL INFO ncclCommInitRank comm 0x9b1c520 rank 0 nranks 2 cudaDev 0 nvmlDev 0 busId 5c000 commId 0xbbf7e05afb0792bc - Init COMPLETE
+ SUCCESS! Peak memory/GPU: ['20.77 GB', '20.77 GB']
+bc11u11n2:898588:898624 [1] NCCL INFO [Service thread] Connection closed by localRank 1
+bc11u11n2:898587:898622 [0] NCCL INFO [Service thread] Connection closed by localRank 0
+bc11u11n2:898588:898632 [1] NCCL INFO comm 0xb4db470 rank 1 nranks 2 cudaDev 1 busId d8000 - Abort COMPLETE
+bc11u11n2:898587:898633 [0] NCCL INFO comm 0x9b1c520 rank 0 nranks 2 cudaDev 0 busId 5c000 - Abort COMPLETE
+>>> Step 7: Profiling
+
+============================================================
+ Profiling FSDP: resnet50 on 2 GPUs
+============================================================
+bc11u11n2:898639:898639 [0] NCCL INFO Bootstrap : Using ibs1:192.168.251.104<0>
+bc11u11n2:898639:898639 [0] NCCL INFO NET/Plugin: No plugin found (libnccl-net.so)
+bc11u11n2:898639:898639 [0] NCCL INFO NET/Plugin: Plugin load returned 2 : libnccl-net.so: cannot open shared object file: No such file or directory : when loading libnccl-net.so
+bc11u11n2:898639:898639 [0] NCCL INFO NET/Plugin: Using internal network plugin.
+bc11u11n2:898639:898639 [0] NCCL INFO cudaDriverVersion 12020
+NCCL version 2.21.5+cuda12.4
+bc11u11n2:898639:898658 [0] NCCL INFO NET/IB : Using [0]mlx5_0:1/RoCE [1]hfi1_0:1/IB [RO]; OOB ibs1:192.168.251.104<0>
+bc11u11n2:898639:898658 [0] NCCL INFO Using non-device net plugin version 0
+bc11u11n2:898639:898658 [0] NCCL INFO Using network IB
+bc11u11n2:898640:898640 [1] NCCL INFO cudaDriverVersion 12020
+bc11u11n2:898640:898640 [1] NCCL INFO Bootstrap : Using ibs1:192.168.251.104<0>
+bc11u11n2:898640:898640 [1] NCCL INFO NET/Plugin: No plugin found (libnccl-net.so)
+bc11u11n2:898640:898640 [1] NCCL INFO NET/Plugin: Plugin load returned 2 : libnccl-net.so: cannot open shared object file: No such file or directory : when loading libnccl-net.so
+bc11u11n2:898640:898640 [1] NCCL INFO NET/Plugin: Using internal network plugin.
+bc11u11n2:898640:898665 [1] NCCL INFO NET/IB : Using [0]mlx5_0:1/RoCE [1]hfi1_0:1/IB [RO]; OOB ibs1:192.168.251.104<0>
+bc11u11n2:898640:898665 [1] NCCL INFO Using non-device net plugin version 0
+bc11u11n2:898640:898665 [1] NCCL INFO Using network IB
+bc11u11n2:898640:898665 [1] NCCL INFO ncclCommInitRank comm 0xa3c5100 rank 1 nranks 2 cudaDev 1 nvmlDev 1 busId d8000 commId 0xe84b29b5d0becbff - Init START
+bc11u11n2:898639:898658 [0] NCCL INFO ncclCommInitRank comm 0x985ef40 rank 0 nranks 2 cudaDev 0 nvmlDev 0 busId 5c000 commId 0xe84b29b5d0becbff - Init START
+bc11u11n2:898639:898658 [0] NCCL INFO Setting affinity for GPU 0 to 0f00,0000000f
+bc11u11n2:898640:898665 [1] NCCL INFO Setting affinity for GPU 1 to f0000000,00f00000
+bc11u11n2:898640:898665 [1] NCCL INFO comm 0xa3c5100 rank 1 nRanks 2 nNodes 1 localRanks 2 localRank 1 MNNVL 0
+bc11u11n2:898640:898665 [1] NCCL INFO Trees [0] -1/-1/-1->1->0 [1] -1/-1/-1->1->0
+bc11u11n2:898639:898658 [0] NCCL INFO comm 0x985ef40 rank 0 nRanks 2 nNodes 1 localRanks 2 localRank 0 MNNVL 0
+bc11u11n2:898640:898665 [1] NCCL INFO P2P Chunksize set to 131072
+bc11u11n2:898639:898658 [0] NCCL INFO Channel 00/02 :    0   1
+bc11u11n2:898639:898658 [0] NCCL INFO Channel 01/02 :    0   1
+bc11u11n2:898639:898658 [0] NCCL INFO Trees [0] 1/-1/-1->0->-1 [1] 1/-1/-1->0->-1
+bc11u11n2:898639:898658 [0] NCCL INFO P2P Chunksize set to 131072
+bc11u11n2:898640:898665 [1] NCCL INFO Channel 00 : 1[1] -> 0[0] via SHM/direct/direct
+bc11u11n2:898639:898658 [0] NCCL INFO Channel 00 : 0[0] -> 1[1] via SHM/direct/direct
+bc11u11n2:898640:898665 [1] NCCL INFO Channel 01 : 1[1] -> 0[0] via SHM/direct/direct
+bc11u11n2:898639:898658 [0] NCCL INFO Channel 01 : 0[0] -> 1[1] via SHM/direct/direct
+bc11u11n2:898639:898658 [0] NCCL INFO Connected all rings
+bc11u11n2:898639:898658 [0] NCCL INFO Connected all trees
+bc11u11n2:898640:898665 [1] NCCL INFO Connected all rings
+bc11u11n2:898640:898665 [1] NCCL INFO Connected all trees
+bc11u11n2:898640:898665 [1] NCCL INFO threadThresholds 8/8/64 | 16/8/64 | 512 | 512
+bc11u11n2:898640:898665 [1] NCCL INFO 2 coll channels, 2 collnet channels, 0 nvls channels, 2 p2p channels, 2 p2p channels per peer
+bc11u11n2:898639:898658 [0] NCCL INFO threadThresholds 8/8/64 | 16/8/64 | 512 | 512
+bc11u11n2:898639:898658 [0] NCCL INFO 2 coll channels, 2 collnet channels, 0 nvls channels, 2 p2p channels, 2 p2p channels per peer
+bc11u11n2:898640:898665 [1] NCCL INFO TUNER/Plugin: Plugin load returned 2 : libnccl-net.so: cannot open shared object file: No such file or directory : when loading libnccl-tuner.so
+bc11u11n2:898640:898665 [1] NCCL INFO TUNER/Plugin: Using internal tuner plugin.
+bc11u11n2:898640:898665 [1] NCCL INFO ncclCommInitRank comm 0xa3c5100 rank 1 nranks 2 cudaDev 1 nvmlDev 1 busId d8000 commId 0xe84b29b5d0becbff - Init COMPLETE
+bc11u11n2:898639:898658 [0] NCCL INFO TUNER/Plugin: Plugin load returned 2 : libnccl-net.so: cannot open shared object file: No such file or directory : when loading libnccl-tuner.so
+bc11u11n2:898639:898658 [0] NCCL INFO TUNER/Plugin: Using internal tuner plugin.
+bc11u11n2:898639:898658 [0] NCCL INFO ncclCommInitRank comm 0x985ef40 rank 0 nranks 2 cudaDev 0 nvmlDev 0 busId 5c000 commId 0xe84b29b5d0becbff - Init COMPLETE
+ Trace saved: results/trace_fsdp_resnet50_rank0.json
+
+ Top 15 CUDA Kernels:
+-------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  
+                                                   Name    Self CPU %      Self CPU   CPU total %     CPU total  CPU time avg     Self CUDA   Self CUDA %    CUDA total  CUDA time avg       CPU Mem  Self CPU Mem      CUDA Mem  Self CUDA Mem    # of Calls  
+-------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  
+                       FullyShardedDataParallel.forward         4.59%      29.687ms        91.89%     594.183ms       6.602ms       0.000us         0.00%     527.246ms       5.858ms           0 b           0 b      18.85 Gb    -923.75 Mb            90  
+                       FullyShardedDataParallel.forward         0.00%       0.000us         0.00%       0.000us       0.000us     336.340ms        41.26%     336.340ms       3.737ms           0 b           0 b           0 b           0 b            90  
+                                     record_param_comms         2.63%      17.008ms         3.65%      23.573ms      44.477us     290.805ms        35.67%     290.805ms     548.688us           0 b           0 b           0 b           0 b           530  
+autograd::engine::evaluate_function: ConvolutionBack...         1.19%       7.711ms        12.27%      79.363ms     299.482us       0.000us         0.00%     289.695ms       1.093ms           0 b           0 b      -3.12 Gb     -10.16 Gb           265  
+                                   ConvolutionBackward0         0.31%       1.998ms         5.52%      35.668ms     134.595us       0.000us         0.00%     241.646ms     911.872us           0 b           0 b       6.76 Gb           0 b           265  
+                             aten::convolution_backward         2.87%      18.545ms         5.21%      33.670ms     127.057us     241.646ms        29.64%     241.646ms     911.872us           0 b           0 b       6.76 Gb       6.30 Gb           265  
+                                 c10d::_allgather_base_         0.63%       4.076ms         2.97%      19.215ms     109.801us       0.000us         0.00%     194.028ms       1.109ms           0 b           0 b           0 b           0 b           175  
+ncclDevKernel_AllGather_RING_LL(ncclDevComm*, unsign...         0.00%       0.000us         0.00%       0.000us       0.000us     194.028ms        23.80%     194.028ms       1.109ms           0 b           0 b           0 b           0 b           175  
+                                  nccl:_all_gather_base         0.00%       0.000us         0.00%       0.000us       0.000us     194.028ms        23.80%     194.028ms       1.109ms           0 b           0 b           0 b           0 b           175  
+                  FullyShardedDataParallel._pre_forward         7.02%      45.372ms        27.68%     178.996ms       1.989ms       0.000us         0.00%     123.793ms       1.375ms           0 b           0 b     497.42 Mb     497.42 Mb            90  
+                                           aten::conv2d         0.19%       1.200ms         4.04%      26.100ms      98.489us       0.000us         0.00%     105.373ms     397.633us           0 b           0 b       6.66 Gb           0 b           265  
+                                      aten::convolution         0.42%       2.698ms         3.85%      24.898ms      93.954us       0.000us         0.00%     105.373ms     397.633us           0 b           0 b       6.66 Gb           0 b           265  
+                                     aten::_convolution         0.31%       1.989ms         3.43%      22.197ms      83.761us       0.000us         0.00%     105.373ms     397.633us           0 b           0 b       6.66 Gb           0 b           265  
+                                aten::cudnn_convolution         1.88%      12.166ms         3.12%      20.206ms      76.248us     105.373ms        12.92%     105.373ms     397.633us           0 b           0 b       6.66 Gb       6.66 Gb           265  
+autograd::engine::evaluate_function: torch::autograd...         0.80%       5.157ms        13.37%      86.455ms     960.607us       0.000us         0.00%      98.266ms       1.092ms           0 b           0 b    -746.19 Mb    -495.36 Mb            90  
+-------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  
+Self CPU time total: 646.619ms
+Self CUDA time total: 815.270ms
+
+ Kernel summary saved: results/kernel_summary_resnet50.txt
+
+ Memory Summary:
+|===========================================================================|
+|                  PyTorch CUDA memory summary, device ID 0                 |
+|---------------------------------------------------------------------------|
+|            CUDA OOMs: 0            |        cudaMalloc retries: 0         |
+|===========================================================================|
+|        Metric         | Cur Usage  | Peak Usage | Tot Alloc  | Tot Freed  |
+|---------------------------------------------------------------------------|
+| Allocated memory      | 243023 KiB |   2878 MiB | 174599 MiB | 174362 MiB |
+|---------------------------------------------------------------------------|
+| Active memory         | 258588 KiB |   2894 MiB | 174599 MiB | 174346 MiB |
+|---------------------------------------------------------------------------|
+| Requested memory      | 250888 KiB |   2872 MiB | 173543 MiB | 173298 MiB |
+|---------------------------------------------------------------------------|
+| GPU reserved memory   |   3418 MiB |   3418 MiB |   3418 MiB |      0 B   |
+|---------------------------------------------------------------------------|
+| Non-releasable memory | 142820 KiB | 262824 KiB |  63297 MiB |  63157 MiB |
+|---------------------------------------------------------------------------|
+| Allocations           |     381    |     582    |   15178    |   14797    |
+|---------------------------------------------------------------------------|
+| Active allocs         |     476    |     584    |   15178    |   14702    |
+|---------------------------------------------------------------------------|
+| GPU reserved segments |      94    |      94    |      94    |       0    |
+|---------------------------------------------------------------------------|
+| Non-releasable allocs |      37    |      76    |    6620    |    6583    |
+|---------------------------------------------------------------------------|
+| Oversize allocations  |       0    |       0    |       0    |       0    |
+|---------------------------------------------------------------------------|
+| Oversize GPU segments |       0    |       0    |       0    |       0    |
+|===========================================================================|
+
+bc11u11n2:898640:898668 [1] NCCL INFO [Service thread] Connection closed by localRank 1
+bc11u11n2:898639:898670 [0] NCCL INFO [Service thread] Connection closed by localRank 0
+bc11u11n2:898640:898684 [1] NCCL INFO comm 0xa3c5100 rank 1 nranks 2 cudaDev 1 busId d8000 - Abort COMPLETE
+bc11u11n2:898639:898685 [0] NCCL INFO comm 0x985ef40 rank 0 nranks 2 cudaDev 0 busId 5c000 - Abort COMPLETE
+>>> Step 8: Charts
+ Chart saved: results/chart_comparison_resnet50.png
+ Chart saved: results/chart_comparison_vit_b_16.png
+ Chart saved: results/chart_comparison_unknown.png
+
+==========================================================================================
+Mode                         Model           GPUs   Step(ms)  Thru(s/s)   Mem(GB)
+------------------------------------------------------------------------------------------
+unknown                      ?                  1       0.00       0.00     0.000
+unknown                      ?                  1       0.00       0.00     0.000
+DDP (2GPU)                   resnet50           2     110.50     579.18     3.041
+FSDP-Full (2GPU)             resnet50           2     118.85     538.49     2.811
+FSDP-Full+MP (2GPU)          resnet50           2     189.44     337.83     2.203
+FSDP-GradOp (2GPU)           resnet50           2     107.98     592.73     2.879
+Single GPU                   resnet50           1     101.75     314.51     2.945
+DDP (2GPU)                   vit_b_16           2     359.92     177.82     5.165
+FSDP-Full (2GPU)             vit_b_16           2     378.47     169.10     4.391
+FSDP-Full+MP (2GPU)          vit_b_16           2     143.92     444.68     2.478
+Single GPU                   vit_b_16           1     345.51      92.62     4.842
+
+ Table saved: results/comparison_table.txt
+============================================================
+ ALL DONE - Job 8055296 - Fri Apr  3 04:22:35 AM CDT 2026
+============================================================
+total 57344
+drwxr-xr-x 2 ss516 comp468     4096 Apr  3 04:22 .
+drwxr-xr-x 5 ss516 comp468     4096 Apr  3 03:47 ..
+-rw-r--r-- 1 ss516 comp468   119325 Apr  3 04:22 chart_comparison_resnet50.png
+-rw-r--r-- 1 ss516 comp468    92413 Apr  3 04:22 chart_comparison_unknown.png
+-rw-r--r-- 1 ss516 comp468   103570 Apr  3 04:22 chart_comparison_vit_b_16.png
+-rw-r--r-- 1 ss516 comp468     1075 Apr  3 04:22 comparison_table.txt
+-rw-r--r-- 1 ss516 comp468      378 Apr  3 04:18 ddp_resnet50_2gpu.json
+-rw-r--r-- 1 ss516 comp468      379 Apr  3 04:19 ddp_vit_b_16_2gpu.json
+-rw-r--r-- 1 ss516 comp468      661 Apr  3 04:17 environment.txt
+-rw-r--r-- 1 ss516 comp468      457 Apr  3 04:21 fsdp_full_shard+mp_resnet50_2gpu.json
+-rw-r--r-- 1 ss516 comp468      458 Apr  3 04:21 fsdp_full_shard+mp_vit_b_16_2gpu.json
+-rw-r--r-- 1 ss516 comp468      455 Apr  3 04:19 fsdp_full_shard_resnet50_2gpu.json
+-rw-r--r-- 1 ss516 comp468      454 Apr  3 04:20 fsdp_full_shard_vit_b_16_2gpu.json
+-rw-r--r-- 1 ss516 comp468      462 Apr  3 04:20 fsdp_shard_grad_op_resnet50_2gpu.json
+-rw-r--r-- 1 ss516 comp468     6161 Apr  3 04:22 kernel_summary_resnet50.txt
+-rw-r--r-- 1 ss516 comp468     2102 Apr  3 04:17 nvidia_smi.txt
+-rw-r--r-- 1 ss516 comp468      201 Apr  3 04:21 oom_fsdp_vit_l_16_bs64_2gpu.json
+-rw-r--r-- 1 ss516 comp468      316 Apr  3 04:17 single_gpu_resnet50.json
+-rw-r--r-- 1 ss516 comp468      318 Apr  3 04:18 single_gpu_vit_b_16.json
+-rw-r--r-- 1 ss516 comp468     1534 Apr  3 04:22 slurm_8055296.err
+-rw-r--r-- 1 ss516 comp468    61187 Apr  3 04:22 slurm_8055296.out
+-rw-r--r-- 1 ss516 comp468 29033014 Apr  3 04:22 trace_fsdp_resnet50_rank0.json
+-rw-r--r-- 1 ss516 comp468 29217396 Apr  3 04:22 trace_fsdp_resnet50_rank1.json
