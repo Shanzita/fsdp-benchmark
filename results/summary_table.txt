@@ -1,5 +1,7 @@
 Config                              Model         GPUs   Step(ms)  Thru(s/s)   Mem(GB)
 -----------------------------------------------------------------------------------------------
+unknown                             ?                1       0.00       0.00     0.000
+unknown                             ?                1       0.00       0.00     0.000
 FSDP-Full+MP+AC (2GPU)              resnet50         2     136.70     468.19     1.001
 FSDP-Full+AC (2GPU)                 resnet50         2      78.08     819.68     1.246
 FSDP-Full+MP (2GPU)                 resnet50         2      90.74     705.30     2.200

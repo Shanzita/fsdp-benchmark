@@ -10,14 +10,30 @@ RESULTS_DIR = "results"
 COLORS = ["#4C72B0", "#DD8452", "#55A868", "#C44E52", "#8172B3",
           "#937860", "#DA8BC3", "#8C8C8C", "#CCB974", "#64B5CD", "#B07AA1", "#FF9DA7"]
 
+# Bump font sizes for report legibility
+plt.rcParams.update({
+    'font.size': 12,
+    'axes.titlesize': 14,
+    'axes.labelsize': 12,
+    'xtick.labelsize': 10,
+    'ytick.labelsize': 10,
+    'legend.fontsize': 10,
+    'figure.titlesize': 16,
+})
+
 
 def load_json(pattern):
     results = []
     for p in sorted(glob.glob(os.path.join(RESULTS_DIR, pattern))):
-        with open(p) as f:
-            r = json.load(f)
-            r["_file"] = os.path.basename(p)
-            results.append(r)
+        try:
+            with open(p) as f:
+                r = json.load(f)
+                if not isinstance(r, dict):
+                    continue
+                r["_file"] = os.path.basename(p)
+                results.append(r)
+        except (json.JSONDecodeError, UnicodeDecodeError):
+            continue
     return results
 
 
@@ -48,7 +64,10 @@ def plot_comparison():
         return
     groups = {}
     for r in results:
-        groups.setdefault(r.get("model", "unknown"), []).append(r)
+        model = r.get("model", "unknown")
+        if model == "unknown":
+            continue
+        groups.setdefault(model, []).append(r)
 
     for model_name, mrs in groups.items():
         labels = [make_label(r) for r in mrs]
@@ -111,7 +130,7 @@ def plot_memory_waterfall():
         mrs_sorted = sorted(mrs, key=lambda r: r.get("max_peak_memory_gb", r.get("peak_memory_gb", 0)), reverse=True)
         labels = [make_label(r) for r in mrs_sorted]
         mems = [r.get("max_peak_memory_gb", r.get("peak_memory_gb", 0)) for r in mrs_sorted]
-        baseline = mems[0] if mems else 1
+        baseline = mems[0] if mems and mems[0] > 0 else 1
 
         fig, ax = plt.subplots(figsize=(12, 6))
         colors_mem = ["#C44E52" if m > baseline * 0.7 else "#DD8452" if m > baseline * 0.4 else "#55A868" for m in mems]
