@@ -4,18 +4,7 @@ import torch
 import torch.distributed as dist
 import torch.nn as nn
 from torch.nn.parallel import DistributedDataParallel as DDP
-from torchvision import models
-
-def get_model(name):
-    model_map = {
-        "resnet50": models.resnet50,
-        "vit_b_16": models.vit_b_16,
-        "vit_l_16": models.vit_l_16,
-    }
-    return model_map[name](weights=None)
-
-def count_parameters(model):
-    return sum(p.numel() for p in model.parameters() if p.requires_grad)
+from utils import get_model, count_parameters, MODEL_CHOICES
 
 def benchmark(model_name, batch_size, num_steps, warmup_steps=5):
     dist.init_process_group(backend="nccl")
@@ -97,7 +86,7 @@ def benchmark(model_name, batch_size, num_steps, warmup_steps=5):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument("--model", default="resnet50", choices=["resnet50", "vit_b_16", "vit_l_16"])
+    parser.add_argument("--model", default="resnet50", choices=MODEL_CHOICES)
     parser.add_argument("--batch_size", type=int, default=32)
     parser.add_argument("--steps", type=int, default=50)
     args = parser.parse_args()

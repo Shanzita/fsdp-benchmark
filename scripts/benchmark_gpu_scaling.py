@@ -12,16 +12,7 @@ from torch.distributed.fsdp import FullyShardedDataParallel as FSDP
 from torch.distributed.fsdp import ShardingStrategy, MixedPrecision
 from torch.distributed.fsdp.wrap import size_based_auto_wrap_policy
 from torch.nn.parallel import DistributedDataParallel as DDP
-from torchvision import models
-
-
-def get_model(name):
-    return {"resnet50": models.resnet50, "vit_b_16": models.vit_b_16,
-            "vit_l_16": models.vit_l_16}[name](weights=None)
-
-
-def count_parameters(model):
-    return sum(p.numel() for p in model.parameters() if p.requires_grad)
+from utils import get_model, count_parameters, MODEL_CHOICES
 
 
 def run_benchmark(model_name, batch_size, num_steps, mode, warmup_steps=5):
@@ -117,7 +108,7 @@ def run_benchmark(model_name, batch_size, num_steps, mode, warmup_steps=5):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument("--model", default="resnet50", choices=["resnet50", "vit_b_16", "vit_l_16"])
+    parser.add_argument("--model", default="resnet50", choices=MODEL_CHOICES)
     parser.add_argument("--batch_size", type=int, default=32)
     parser.add_argument("--steps", type=int, default=50)
     parser.add_argument("--mode", default="fsdp", choices=["ddp", "fsdp"])

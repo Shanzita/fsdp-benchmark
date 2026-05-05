@@ -4,11 +4,7 @@ import argparse, json, os
 import torch
 import torch.distributed as dist
 import torch.nn as nn
-from torchvision import models
-
-def get_model(name):
-    return {"resnet50": models.resnet50, "vit_b_16": models.vit_b_16,
-            "vit_l_16": models.vit_l_16}[name](weights=None)
+from utils import get_model
 
 def test_single(model_name, batch_size):
     device = torch.device("cuda:0")

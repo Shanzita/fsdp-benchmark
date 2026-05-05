@@ -1,0 +1,11 @@
+__pycache__/
+*.pyc
+*.pyo
+results/.nfs*
+results/slurm_*.out
+results/slurm_*.err
+results/trace_*.json
+results/chart_*.png
+results/fig_comparison_unknown.png
+results/fig_memory_waterfall_unknown.png
+*.DS_Store

@@ -3,7 +3,7 @@
 Sweeps batch sizes for single GPU, DDP, and FSDP to show how FSDP enables
 larger batch sizes through memory sharding.
 """
-import argparse, json, os, time, traceback
+import argparse, json, os, time
 from functools import partial
 import torch
 import torch.distributed as dist
@@ -12,16 +12,7 @@ from torch.distributed.fsdp import FullyShardedDataParallel as FSDP
 from torch.distributed.fsdp import ShardingStrategy, MixedPrecision
 from torch.distributed.fsdp.wrap import size_based_auto_wrap_policy
 from torch.nn.parallel import DistributedDataParallel as DDP
-from torchvision import models
-
-
-def get_model(name):
-    return {"resnet50": models.resnet50, "vit_b_16": models.vit_b_16,
-            "vit_l_16": models.vit_l_16}[name](weights=None)
-
-
-def count_parameters(model):
-    return sum(p.numel() for p in model.parameters() if p.requires_grad)
+from utils import get_model, count_parameters, MODEL_CHOICES
 
 
 def try_batch_size(model_name, batch_size, mode, num_steps=10, warmup_steps=3):
@@ -177,7 +168,7 @@ def sweep(model_name, mode, batch_sizes):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument("--model", default="resnet50", choices=["resnet50", "vit_b_16", "vit_l_16"])
+    parser.add_argument("--model", default="resnet50", choices=MODEL_CHOICES)
     parser.add_argument("--mode", default="fsdp", choices=["single", "ddp", "fsdp", "fsdp_mp"])
     parser.add_argument("--batch_sizes", type=int, nargs="+", default=[8, 16, 32, 64, 128, 256])
     args = parser.parse_args()

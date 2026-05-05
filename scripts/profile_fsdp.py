@@ -7,11 +7,7 @@ import torch.nn as nn
 from torch.distributed.fsdp import FullyShardedDataParallel as FSDP, ShardingStrategy
 from torch.distributed.fsdp.wrap import size_based_auto_wrap_policy
 from torch.profiler import profile, ProfilerActivity, schedule
-from torchvision import models
-
-def get_model(name):
-    return {"resnet50": models.resnet50, "vit_b_16": models.vit_b_16,
-            "vit_l_16": models.vit_l_16}[name](weights=None)
+from utils import get_model, MODEL_CHOICES
 
 def profile_fsdp(model_name, batch_size):
     dist.init_process_group(backend="nccl")
@@ -88,7 +84,7 @@ def profile_fsdp(model_name, batch_size):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument("--model", default="resnet50", choices=["resnet50", "vit_b_16", "vit_l_16"])
+    parser.add_argument("--model", default="resnet50", choices=MODEL_CHOICES)
     parser.add_argument("--batch_size", type=int, default=32)
     args = parser.parse_args()
     profile_fsdp(args.model, args.batch_size)
