@@ -23,8 +23,11 @@ def make_label(r):
     elif "fsdp" in mode:
         strat = r.get("sharding_strategy", "FULL_SHARD")
         mp = "+MP" if r.get("mixed_precision") else ""
-        short = {"FULL_SHARD": "Full", "SHARD_GRAD_OP": "GradOp"}.get(strat, strat)
-        return f"FSDP-{short}{mp} ({gpus}GPU)"
+        ac = "+AC" if r.get("activation_checkpointing") else ""
+        offload = "+Offld" if r.get("cpu_offload") else ""
+        accum = f"+GA{r['grad_accum_steps']}" if r.get("grad_accum_steps", 1) > 1 else ""
+        short = {"FULL_SHARD": "Full", "SHARD_GRAD_OP": "GradOp", "NO_SHARD": "NoSh"}.get(strat, strat)
+        return f"FSDP-{short}{mp}{ac}{offload}{accum} ({gpus}GPU)"
     return mode
 
 def plot(d="results"):
@@ -32,13 +35,15 @@ def plot(d="results"):
     if not results:
         print("No results found. Run benchmarks first.")
         sys.exit(1)
-    # Filter out oom test results
-    results = [r for r in results if "oom" not in r.get("_file", "")]
+    # Filter out oom, scaling, and batch_scaling results (different format)
+    results = [r for r in results if not any(k in r.get("_file", "")
+               for k in ("oom", "scaling_", "batch_scaling"))]
     groups = {}
     for r in results:
         groups.setdefault(r.get("model", "unknown"), []).append(r)
 
-    colors = ["#4C72B0", "#DD8452", "#55A868", "#C44E52", "#8172B3", "#937860"]
+    colors = ["#4C72B0", "#DD8452", "#55A868", "#C44E52", "#8172B3", "#937860",
+              "#DA8BC3", "#8C8C8C", "#CCB974", "#64B5CD", "#B07AA1", "#FF9DA7"]
 
     for model_name, mrs in groups.items():
         labels = [make_label(r) for r in mrs]
