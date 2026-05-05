@@ -6,13 +6,13 @@
   "effective_batch_size": 64,
   "num_steps": 50,
   "num_gpus": 2,
-  "avg_step_time_ms": 110.5,
-  "throughput_samples_per_sec": 579.18,
+  "avg_step_time_ms": 47.86,
+  "throughput_samples_per_sec": 1337.18,
   "peak_memory_gb_per_gpu": [
-    3.041,
-    3.041
+    3.018,
+    3.018
   ],
-  "max_peak_memory_gb": 3.041,
+  "max_peak_memory_gb": 3.018,
   "final_loss": 0.0001,
-  "gpu_name": "Tesla V100-PCIE-32GB"
+  "gpu_name": "NVIDIA L40S"
 }

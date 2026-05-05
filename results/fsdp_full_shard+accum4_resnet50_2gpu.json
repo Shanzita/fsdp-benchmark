@@ -1,0 +1,23 @@
+{
+  "mode": "fsdp_full_shard+accum4",
+  "model": "resnet50",
+  "num_params_M": 25.6,
+  "batch_size_per_gpu": 32,
+  "effective_batch_size": 256,
+  "num_steps": 50,
+  "num_gpus": 2,
+  "sharding_strategy": "FULL_SHARD",
+  "mixed_precision": false,
+  "activation_checkpointing": false,
+  "cpu_offload": false,
+  "grad_accum_steps": 4,
+  "avg_step_time_ms": 217.35,
+  "throughput_samples_per_sec": 294.46,
+  "peak_memory_gb_per_gpu": [
+    2.826,
+    2.826
+  ],
+  "max_peak_memory_gb": 2.826,
+  "final_loss": 0.0001,
+  "gpu_name": "NVIDIA L40S"
+}

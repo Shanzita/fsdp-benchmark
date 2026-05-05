@@ -1,0 +1,19 @@
+{
+  "experiment": "gpu_scaling",
+  "mode": "ddp",
+  "model": "resnet50",
+  "num_params_M": 25.6,
+  "batch_size_per_gpu": 32,
+  "effective_batch_size": 64,
+  "num_steps": 50,
+  "num_gpus": 2,
+  "avg_step_time_ms": 47.88,
+  "throughput_samples_per_sec": 1336.7,
+  "peak_memory_gb_per_gpu": [
+    3.018,
+    3.018
+  ],
+  "max_peak_memory_gb": 3.018,
+  "final_loss": 0.0001,
+  "gpu_name": "NVIDIA L40S"
+}

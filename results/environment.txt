@@ -11,12 +11,12 @@
   TorchVision: 0.20.1+cu121
 
 ## Hardware
-  CPU:         Intel(R) Xeon(R) Gold 6230 CPU @ 2.10GHz
+  CPU:         Intel(R) Xeon(R) Platinum 8468
   Cores:       4
   RAM:          GB
-  NVIDIA Driver: 535.230.02
-  GPU 0:       Tesla V100-PCIE-32GB (31.7 GB)
-  GPU 1:       Tesla V100-PCIE-32GB (31.7 GB)
+  NVIDIA Driver: 535.216.03
+  GPU 0:       NVIDIA L40S (44.3 GB)
+  GPU 1:       NVIDIA L40S (44.3 GB)
 
 ## Distributed
   NCCL:        True

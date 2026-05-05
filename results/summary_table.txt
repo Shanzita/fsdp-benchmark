@@ -1,0 +1,22 @@
+Config                              Model         GPUs   Step(ms)  Thru(s/s)   Mem(GB)
+-----------------------------------------------------------------------------------------------
+FSDP-Full+MP+AC (2GPU)              resnet50         2     136.70     468.19     1.001
+FSDP-Full+AC (2GPU)                 resnet50         2      78.08     819.68     1.246
+FSDP-Full+MP (2GPU)                 resnet50         2      90.74     705.30     2.200
+FSDP-Full+Offld (2GPU)              resnet50         2      82.23     778.34     2.640
+FSDP-Full (2GPU)                    resnet50         2      54.81    1167.69     2.783
+FSDP-Full+GA4 (2GPU)                resnet50         2     217.35     294.46     2.826
+FSDP-GradOp (2GPU)                  resnet50         2      47.29    1353.25     2.857
+Single GPU                          resnet50         1      43.58     734.24     2.919
+FSDP-NoSh (2GPU)                    resnet50         2      47.63    1343.69     2.923
+DDP (2GPU)                          resnet50         2      47.86    1337.18     3.018
+FSDP-Full+MP+AC (2GPU)              vit_b_16         2      90.53     706.93     0.917
+FSDP-Full+AC (2GPU)                 vit_b_16         2     194.24     329.49     1.151
+FSDP-Full+MP (2GPU)                 vit_b_16         2      62.00    1032.18     2.377
+FSDP-Full+Offld (2GPU)              vit_b_16         2     208.76     306.57     3.919
+FSDP-Full (2GPU)                    vit_b_16         2     150.27     425.90     4.391
+FSDP-Full+GA4 (2GPU)                vit_b_16         2     598.59     106.92     4.552
+FSDP-GradOp (2GPU)                  vit_b_16         2     143.25     446.78     4.681
+Single GPU                          vit_b_16         1     139.86     228.80     4.844
+FSDP-NoSh (2GPU)                    vit_b_16         2     147.14     434.95     4.845
+DDP (2GPU)                          vit_b_16         2     145.48     439.93     5.164

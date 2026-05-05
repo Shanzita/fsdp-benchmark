@@ -1,0 +1,54 @@
+{
+  "experiment": "batch_scaling",
+  "mode": "fsdp",
+  "model": "vit_b_16",
+  "num_gpus": 2,
+  "gpu_name": "NVIDIA L40S",
+  "max_successful_batch_size": 256,
+  "sweep_results": [
+    {
+      "batch_size_per_gpu": 8,
+      "status": "SUCCESS",
+      "avg_step_time_ms": 67.38,
+      "throughput_samples_per_sec": 237.44,
+      "peak_memory_gb": 1.511
+    },
+    {
+      "batch_size_per_gpu": 16,
+      "status": "SUCCESS",
+      "avg_step_time_ms": 103.83,
+      "throughput_samples_per_sec": 308.19,
+      "peak_memory_gb": 2.789
+    },
+    {
+      "batch_size_per_gpu": 32,
+      "status": "SUCCESS",
+      "avg_step_time_ms": 150.56,
+      "throughput_samples_per_sec": 425.09,
+      "peak_memory_gb": 4.713
+    },
+    {
+      "batch_size_per_gpu": 64,
+      "status": "SUCCESS",
+      "avg_step_time_ms": 285.58,
+      "throughput_samples_per_sec": 448.22,
+      "peak_memory_gb": 8.853
+    },
+    {
+      "batch_size_per_gpu": 128,
+      "status": "SUCCESS",
+      "avg_step_time_ms": 574.27,
+      "throughput_samples_per_sec": 445.78,
+      "peak_memory_gb": 16.816
+    },
+    {
+      "batch_size_per_gpu": 256,
+      "status": "SUCCESS",
+      "avg_step_time_ms": 1135.88,
+      "throughput_samples_per_sec": 450.75,
+      "peak_memory_gb": 32.329
+    }
+  ],
+  "optimal_batch_size": 256,
+  "peak_throughput": 450.75
+}

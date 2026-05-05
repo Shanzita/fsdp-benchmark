@@ -8,13 +8,16 @@
   "num_gpus": 2,
   "sharding_strategy": "FULL_SHARD",
   "mixed_precision": true,
-  "avg_step_time_ms": 143.92,
-  "throughput_samples_per_sec": 444.68,
+  "activation_checkpointing": false,
+  "cpu_offload": false,
+  "grad_accum_steps": 1,
+  "avg_step_time_ms": 62.0,
+  "throughput_samples_per_sec": 1032.18,
   "peak_memory_gb_per_gpu": [
-    2.477,
-    2.478
+    2.377,
+    2.377
   ],
-  "max_peak_memory_gb": 2.478,
-  "final_loss": 2.7344,
-  "gpu_name": "Tesla V100-PCIE-32GB"
+  "max_peak_memory_gb": 2.377,
+  "final_loss": 2.7422,
+  "gpu_name": "NVIDIA L40S"
 }

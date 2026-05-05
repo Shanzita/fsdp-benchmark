@@ -5,8 +5,8 @@
   "num_gpus": 2,
   "status": "SUCCESS",
   "peak_memory_gb_per_gpu": [
-    20.767,
-    20.767
+    20.785,
+    20.784
   ],
-  "max_peak_memory_gb": 20.767
+  "max_peak_memory_gb": 20.785
 }

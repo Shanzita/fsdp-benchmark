@@ -1,0 +1,18 @@
+{
+  "experiment": "gpu_scaling",
+  "mode": "fsdp",
+  "model": "resnet50",
+  "num_params_M": 25.6,
+  "batch_size_per_gpu": 32,
+  "effective_batch_size": 32,
+  "num_steps": 50,
+  "num_gpus": 1,
+  "avg_step_time_ms": 44.92,
+  "throughput_samples_per_sec": 712.34,
+  "peak_memory_gb_per_gpu": [
+    2.923
+  ],
+  "max_peak_memory_gb": 2.923,
+  "final_loss": 0.0,
+  "gpu_name": "NVIDIA L40S"
+}

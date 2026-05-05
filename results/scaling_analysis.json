@@ -1,0 +1,166 @@
+[
+  {
+    "experiment": "gpu_scaling",
+    "mode": "ddp",
+    "model": "resnet50",
+    "num_params_M": 25.6,
+    "batch_size_per_gpu": 32,
+    "effective_batch_size": 32,
+    "num_steps": 50,
+    "num_gpus": 1,
+    "avg_step_time_ms": 45.48,
+    "throughput_samples_per_sec": 703.67,
+    "peak_memory_gb_per_gpu": [
+      3.018
+    ],
+    "max_peak_memory_gb": 3.018,
+    "final_loss": 0.0,
+    "gpu_name": "NVIDIA L40S",
+    "speedup": 1.0,
+    "scaling_efficiency_pct": 100.0
+  },
+  {
+    "experiment": "gpu_scaling",
+    "mode": "ddp",
+    "model": "resnet50",
+    "num_params_M": 25.6,
+    "batch_size_per_gpu": 32,
+    "effective_batch_size": 64,
+    "num_steps": 50,
+    "num_gpus": 2,
+    "avg_step_time_ms": 47.88,
+    "throughput_samples_per_sec": 1336.7,
+    "peak_memory_gb_per_gpu": [
+      3.018,
+      3.018
+    ],
+    "max_peak_memory_gb": 3.018,
+    "final_loss": 0.0001,
+    "gpu_name": "NVIDIA L40S",
+    "speedup": 1.9,
+    "scaling_efficiency_pct": 95.0
+  },
+  {
+    "experiment": "gpu_scaling",
+    "mode": "ddp",
+    "model": "vit_b_16",
+    "num_params_M": 86.6,
+    "batch_size_per_gpu": 32,
+    "effective_batch_size": 32,
+    "num_steps": 50,
+    "num_gpus": 1,
+    "avg_step_time_ms": 141.78,
+    "throughput_samples_per_sec": 225.7,
+    "peak_memory_gb_per_gpu": [
+      5.164
+    ],
+    "max_peak_memory_gb": 5.164,
+    "final_loss": 3.0786,
+    "gpu_name": "NVIDIA L40S",
+    "speedup": 1.0,
+    "scaling_efficiency_pct": 100.0
+  },
+  {
+    "experiment": "gpu_scaling",
+    "mode": "ddp",
+    "model": "vit_b_16",
+    "num_params_M": 86.6,
+    "batch_size_per_gpu": 32,
+    "effective_batch_size": 64,
+    "num_steps": 50,
+    "num_gpus": 2,
+    "avg_step_time_ms": 145.47,
+    "throughput_samples_per_sec": 439.96,
+    "peak_memory_gb_per_gpu": [
+      5.164,
+      5.164
+    ],
+    "max_peak_memory_gb": 5.164,
+    "final_loss": 3.4077,
+    "gpu_name": "NVIDIA L40S",
+    "speedup": 1.949,
+    "scaling_efficiency_pct": 97.5
+  },
+  {
+    "experiment": "gpu_scaling",
+    "mode": "fsdp",
+    "model": "resnet50",
+    "num_params_M": 25.6,
+    "batch_size_per_gpu": 32,
+    "effective_batch_size": 32,
+    "num_steps": 50,
+    "num_gpus": 1,
+    "avg_step_time_ms": 44.92,
+    "throughput_samples_per_sec": 712.34,
+    "peak_memory_gb_per_gpu": [
+      2.923
+    ],
+    "max_peak_memory_gb": 2.923,
+    "final_loss": 0.0,
+    "gpu_name": "NVIDIA L40S",
+    "speedup": 1.0,
+    "scaling_efficiency_pct": 100.0
+  },
+  {
+    "experiment": "gpu_scaling",
+    "mode": "fsdp",
+    "model": "resnet50",
+    "num_params_M": 25.6,
+    "batch_size_per_gpu": 32,
+    "effective_batch_size": 64,
+    "num_steps": 50,
+    "num_gpus": 2,
+    "avg_step_time_ms": 54.9,
+    "throughput_samples_per_sec": 1165.78,
+    "peak_memory_gb_per_gpu": [
+      2.782,
+      2.782
+    ],
+    "max_peak_memory_gb": 2.782,
+    "final_loss": 0.0001,
+    "gpu_name": "NVIDIA L40S",
+    "speedup": 1.637,
+    "scaling_efficiency_pct": 81.8
+  },
+  {
+    "experiment": "gpu_scaling",
+    "mode": "fsdp",
+    "model": "vit_b_16",
+    "num_params_M": 86.6,
+    "batch_size_per_gpu": 32,
+    "effective_batch_size": 32,
+    "num_steps": 50,
+    "num_gpus": 1,
+    "avg_step_time_ms": 140.76,
+    "throughput_samples_per_sec": 227.33,
+    "peak_memory_gb_per_gpu": [
+      4.845
+    ],
+    "max_peak_memory_gb": 4.845,
+    "final_loss": 2.2864,
+    "gpu_name": "NVIDIA L40S",
+    "speedup": 1.0,
+    "scaling_efficiency_pct": 100.0
+  },
+  {
+    "experiment": "gpu_scaling",
+    "mode": "fsdp",
+    "model": "vit_b_16",
+    "num_params_M": 86.6,
+    "batch_size_per_gpu": 32,
+    "effective_batch_size": 64,
+    "num_steps": 50,
+    "num_gpus": 2,
+    "avg_step_time_ms": 150.38,
+    "throughput_samples_per_sec": 425.59,
+    "peak_memory_gb_per_gpu": [
+      4.391,
+      4.39
+    ],
+    "max_peak_memory_gb": 4.391,
+    "final_loss": 3.1468,
+    "gpu_name": "NVIDIA L40S",
+    "speedup": 1.872,
+    "scaling_efficiency_pct": 93.6
+  }
+]

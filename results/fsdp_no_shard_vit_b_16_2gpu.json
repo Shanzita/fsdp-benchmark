@@ -1,0 +1,23 @@
+{
+  "mode": "fsdp_no_shard",
+  "model": "vit_b_16",
+  "num_params_M": 86.6,
+  "batch_size_per_gpu": 32,
+  "effective_batch_size": 64,
+  "num_steps": 50,
+  "num_gpus": 2,
+  "sharding_strategy": "NO_SHARD",
+  "mixed_precision": false,
+  "activation_checkpointing": false,
+  "cpu_offload": false,
+  "grad_accum_steps": 1,
+  "avg_step_time_ms": 147.14,
+  "throughput_samples_per_sec": 434.95,
+  "peak_memory_gb_per_gpu": [
+    4.845,
+    4.845
+  ],
+  "max_peak_memory_gb": 4.845,
+  "final_loss": 0.9176,
+  "gpu_name": "NVIDIA L40S"
+}
